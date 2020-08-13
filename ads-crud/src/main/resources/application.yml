@@ -1,0 +1,30 @@
+server:
+    port: 8050
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: {$BOOTSTRAP_SERVER:192.168.99.100:19092}
+      group-id: ${GROUP_ID:group_id}
+      auto-offset-reset: earliest
+
+
+
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
+    cluster-nodes: localhost:9200
+    cluster-name: ${CLUSTER_NAME:docker-cluster}
+
+  elasticsearch:
+    rest:
+      uris: localhost:9200
+lbMarketing:
+  app:
+    jwtSecret: {$SECRET:jwtlbMarketingSecretKey}
+    jwtExpiration: {$EXPIRATION:86400}
+security:
+    basic:
+       enable: false
+    ignored: /**

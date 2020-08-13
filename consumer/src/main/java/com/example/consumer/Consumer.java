@@ -1,19 +1,16 @@
 package com.example.consumer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
-@Service
+@RestController
 public class Consumer {
 
-    private final Logger logger = LoggerFactory.getLogger(Producer.class);
-
-    @KafkaListener(topics = "usersProfiles", groupId = "group_id")
-    public void consume(String message) throws IOException {
-        logger.info(String.format("#### -> Consumed message -> %s", message));
+    @GetMapping("/hello")
+    public String hello()
+    {
+        return "hello bruda wasup ?";
     }
+
+
 }

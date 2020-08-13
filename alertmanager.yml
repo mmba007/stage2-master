@@ -1,0 +1,11 @@
+route:
+  receiver: emailer
+receivers:
+  - name: emailer
+    email_configs:
+      - to: iheb.boumaiza@etudiant-enit.utm.tn
+        from:  iheb.boumaiza@etudiant-enit.utm.tn
+        smarthost: smtp.gmail.com:587 
+        auth_username: iheb.boumaiza@etudiant-enit.utm.tn 
+        auth_identity: iheb.boumaiza@etudiant-enit.utm.tn
+        auth_password: zvgqqmjcipembiyb
