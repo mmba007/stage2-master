@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 public class Ad {
 	@Id
 	private String id;
+
+
 	private String advertiserEmail;
 	private String category;
 	private String title;
@@ -37,7 +39,6 @@ public class Ad {
 	@GeoPointField
 	private GeoPoint location;
 
-
 //	private Set<String> availablePreferences= new HashSet<String>(Arrays.asList("Electronics","Real Estate","Vehicles","House and Garden","Leisure & Entertainment","Shoppings","Pets","Services","Jobs","Enterprise","Others"));
 
 //	private String fullDescription;
@@ -49,7 +50,6 @@ public class Ad {
 //	public void setAvailablePreferences(Set<String> availablePreferences) {
 //		this.availablePreferences = availablePreferences;
 //	}
-
 
 	public String getAdImagesDirectory() {
 		return adImagesDirectory;
@@ -203,11 +203,11 @@ public class Ad {
 		this.rates = rates;
 	}
 
-	public Ad(String category, String title, String description, int price, int advertiserPhoneNumber, String country, String state, String city, Status status, String adImagesDirectory, String condition, String model, String brand, int views, float rate, GeoPoint location) {
+	public Ad(String id,String category ,String title, String description, int price, int advertiserPhoneNumber, String country, String state, String city, Status status, String adImagesDirectory, String condition, String model, String brand, int views, float rate, GeoPoint location) {
 		this.category = category;
 		this.title = title;
 		this.description = description;
-
+		this.id=id;
 		this.price = price;
 		this.advertiserPhoneNumber = advertiserPhoneNumber;
 		this.country = country;

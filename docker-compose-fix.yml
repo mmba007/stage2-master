@@ -107,7 +107,7 @@ services:
   mysql:
       image: mysql:latest
       ports:
-        - "3307:3306"
+        - "3306:3306"
       environment:
           MYSQL_DATABASE: 'security'
           # So you don't have to use root, but you can if you like
@@ -119,7 +119,7 @@ services:
 
       expose:
         # Opens port 3306 on the container
-        - '3307'
+        - '3306'
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
@@ -134,7 +134,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
       #KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9094,LISTENER_HOST://localhost:19092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9094,LISTENER_HOST://192.168.99.100:19092
       #        KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE

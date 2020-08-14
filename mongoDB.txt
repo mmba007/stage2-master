@@ -1,0 +1,4 @@
+docker exec -it mongodb mongo
+db.advertiser.find({location: { $geoWithin: { $center: [ [-74 , 40.47  ] , 10 ] }}})
+
+

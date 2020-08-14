@@ -1,1 +1,1 @@
-https://stackoverflow.com/questions/56449704/consuming-from-kafka-topic-using-spring-only-on-receiving-certain-events
+https://stackoverflow.com/questions/56449704/consuming-from-kafka-topic-using-spring-only-on-receiving-certain-com.enit.randomrecommandationservice.events

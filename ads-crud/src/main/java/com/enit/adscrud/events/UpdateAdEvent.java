@@ -12,8 +12,6 @@ import java.util.List;
 public class UpdateAdEvent extends Event {
 
 	private String id;
-	private String requestId;
-	private String recommandationId;
 	private String advertiserEmail;
 	private String category;
 	private String title;
@@ -37,30 +35,29 @@ public class UpdateAdEvent extends Event {
 
 
 	public UpdateAdEvent(Ad ad) {
-        super(EventName.UPDATE_AD);
-        this.id = ad.getId();
-
-        this.advertiserEmail = ad.getAdvertiserEmail();
-        this.category = ad.getCategory();
-        this.title = ad.getTitle();
-        this.description = ad.getDescription();
-        this.photosUrls = ad.getPhotosUrls();
-        this.price = ad.getPrice();
-        this.advertiserPhoneNumber = ad.getAdvertiserPhoneNumber();
-        this.country = ad.getCountry();
-        this.state = ad.getState();
-        this.city = ad.getCity();
-        this.status = ad.getStatus();
-        this.postedOn = ad.getPostedOn();
-        this.adImagesDirectory = ad.getAdImagesDirectory();
-        this.condition = ad.getCondition();
-        this.model = ad.getModel();
-        this.brand = ad.getBrand();
-        this.views = ad.getViews();
-        this.rates = ad.getRates();
-        this.rate = ad.getRate();
-        this.location = ad.getLocation();
-    }
+		super(EventName.UPDATE_AD);
+		this.id = ad.getId();
+		this.advertiserEmail = ad.getAdvertiserEmail();
+		this.category = ad.getCategory();
+		this.title = ad.getTitle();
+		this.description = ad.getDescription();
+		this.photosUrls = ad.getPhotosUrls();
+		this.price = ad.getPrice();
+		this.advertiserPhoneNumber = ad.getAdvertiserPhoneNumber();
+		this.country = ad.getCountry();
+		this.state = ad.getState();
+		this.city = ad.getCity();
+		this.status = ad.getStatus();
+		this.postedOn = ad.getPostedOn();
+		this.adImagesDirectory = ad.getAdImagesDirectory();
+		this.condition = ad.getCondition();
+		this.model = ad.getModel();
+		this.brand = ad.getBrand();
+		this.views = ad.getViews();
+		this.rates = ad.getRates();
+		this.rate = ad.getRate();
+		this.location = ad.getLocation();
+	}
 
 	public UpdateAdEvent() {
 
@@ -74,21 +71,9 @@ public class UpdateAdEvent extends Event {
 		this.id = id;
 	}
 
-	public String getRequestId() {
-		return requestId;
-	}
 
-	public void setRequestId(String requestId) {
-		this.requestId = requestId;
-	}
 
-	public String getRecommandationId() {
-		return recommandationId;
-	}
 
-	public void setRecommandationId(String recommandationId) {
-		this.recommandationId = recommandationId;
-	}
 
 	public String getAdvertiserEmail() {
 		return advertiserEmail;
@@ -233,6 +218,7 @@ public class UpdateAdEvent extends Event {
 	public void setRates(List<Float> rates) {
 		this.rates = rates;
 	}
+
 
 	public float getRate() {
 		return rate;

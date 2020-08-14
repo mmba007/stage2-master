@@ -1,11 +1,11 @@
-//package com.enit.adscrud.services;
+//package com.enit.adscrud.com.enit.randomrecommandationservice.services;
 //
 //import java.util.ArrayList;
 //import java.util.HashSet;
 //import java.util.List;
 //import java.util.Set;
 //
-//import com.enit.adscrud.entity.Ad;
+//import com.enit.adscrud.com.enit.randomrecommandationservice.entity.Ad;
 //import org.elasticsearch.client.Client;
 //import org.elasticsearch.index.query.QueryBuilder;
 //import org.elasticsearch.index.query.QueryBuilders;

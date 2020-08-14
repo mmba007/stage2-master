@@ -94,7 +94,7 @@ public class AuthRestAPIs {
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
 		System.out
 				.println("************************** username from signup request is : " + signUpRequest.getUsername());
-		System.out.println("************************** result of user exists in repository is : "
+		System.out.println("************************** result of user exists in com.enit.randomrecommandationservice.repository is : "
 				+ userRepository.findByUsername(signUpRequest.getUsername()).isPresent());
 //		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 //			return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),

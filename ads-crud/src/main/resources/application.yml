@@ -3,7 +3,7 @@ server:
 spring:
   kafka:
     consumer:
-      bootstrap-servers: {$BOOTSTRAP_SERVER:192.168.99.100:19092}
+      bootstrap-servers: {$BOOTSTRAP_SERVER:localhost:19092}
       group-id: ${GROUP_ID:group_id}
       auto-offset-reset: earliest
 

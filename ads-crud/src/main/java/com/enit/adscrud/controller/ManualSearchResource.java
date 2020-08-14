@@ -1,4 +1,4 @@
-package com.enit.adscrud.controller;//package com.enit.AdsManagement.controller;
+package com.enit.adscrud.controller;//package com.enit.AdsManagement.com.enit.randomrecommandationservice.controller;
 //
 //import java.util.List;
 //
@@ -9,7 +9,7 @@ package com.enit.adscrud.controller;//package com.enit.AdsManagement.controller;
 //import org.springframework.web.bind.annotation.RestController;
 //
 //import com.enit.AdsManagement.elastic.builder.SearchQueryBuilder;
-//import com.enit.AdsManagement.entity.Ads;
+//import com.enit.AdsManagement.com.enit.randomrecommandationservice.entity.Ads;
 //
 //@RestController
 //@RequestMapping("/rest/manual/search")

@@ -4,7 +4,7 @@
 //import java.util.List;
 //import java.util.Set;
 //
-//import com.enit.adscrud.entity.Ad;
+//import com.enit.adscrud.com.enit.randomrecommandationservice.entity.Ad;
 //import org.elasticsearch.common.unit.Fuzziness;
 //import org.elasticsearch.index.query.QueryBuilder;
 //import org.elasticsearch.index.query.QueryBuilders;

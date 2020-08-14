@@ -22,6 +22,7 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class AdsController {
 //	}
 
 	@PostMapping(value = "/ad/save")
+	@Transactional
 	public String saveAds(@RequestBody Ad ad) {
 		String savedAdId = eserv.saveOneAd(ad);
 		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(ad));
@@ -70,10 +72,11 @@ public class AdsController {
 		return savedAdId;
 	}
     @GetMapping(value="/test")
+	@Transactional
 	public String test()
 	{
-	 eserv.saveOneAd(new Ad("car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,10.099655)));
-		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,10.099655))));
+	 eserv.saveOneAd(new Ad("2","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,10.099655)));
+		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("2","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,10.099655))));
 
 	return "test passed successfully";
 	}
@@ -150,11 +153,13 @@ public class AdsController {
 	}
 //
 	@GetMapping(value = "/ad/{id}/views/increment")
+	@Transactional
 	public String incrementAdViews(@PathVariable String id) {
 		Ad ad = eserv.findById(id).get();
 		if (ad != null) {
 			ad.setViews(ad.getViews() + 1);
-
+			eserv.saveOneAd(ad);
+			kafkaTemplate.send("adsToBeConsumed", new UpdateAdEvent(ad));
 
 			//kafkaTemplate.send("adsToBeConsumed", new UpdateAdEvent(ad));
 			return "Ad's views incremented by 1.";
@@ -164,6 +169,7 @@ public class AdsController {
 	}
 //
 	@PutMapping(value = "/ad/update/{id}")
+	@Transactional
 	public String updateAd(@RequestBody Ad ad, @PathVariable String id) {
 		System.out.println("update is called // Ad is : " + ad.toString());
 
@@ -177,24 +183,28 @@ public class AdsController {
 	}
 //
 	@GetMapping(value = "/ad/disable/{id}")
+	@Transactional
 	public String disableAd(@PathVariable String id) {
 		Ad ad = eserv.findById(id).get();
 		if (ad != null) {
 			ad.setStatus(Status.DESACTIVE);
 //			eserv.saveOneAds(ad);
 			repo.save(ad);
+			kafkaTemplate.send("adsToBeConsumed", new UpdateAdEvent(ad));
 			return "Ad disabled successfully.";
 		} else
 			return "Ad doesn't exist";
 	}
 
 	@GetMapping(value = "/ad/reactivate/{id}")
+	@Transactional
 	public String reactivateAd(@PathVariable String id) {
 		Ad ad = eserv.findById(id).get();
 		if (ad != null) {
 			ad.setStatus(Status.ACTIVE);
 //			eserv.saveOneAds(ad);
 			repo.save(ad);
+			kafkaTemplate.send("adsToBeConsumed", new UpdateAdEvent(ad));
 			return "Ad reactivated successfully.";
 		} else
 			return "Ad doesn't exist";
@@ -269,6 +279,7 @@ public class AdsController {
 ////	}
 //
 	@DeleteMapping(value = "/ads/deleteall")
+	@Transactional
 	public String deleteManyAds() {
 //		eserv.deleteAllAds();
 ////		repo.deleteAll();

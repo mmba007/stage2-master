@@ -1,18 +1,18 @@
-//package com.enit.authentication.controller;
+//package com.enit.authentication.com.enit.randomrecommandationservice.controller;
 //
 //import java.io.File;
 //import java.io.IOException;
 //import java.util.List;
 //import java.util.stream.Collectors;
 //
-//import com.enit.authentication.events.DeleteUserEvent;
-//import com.enit.authentication.events.Event;
-//import com.enit.authentication.events.RegisterUserEvent;
-//import com.enit.authentication.events.UpdateUserEvent;
+//import com.enit.authentication.com.enit.randomrecommandationservice.events.DeleteUserEvent;
+//import com.enit.authentication.com.enit.randomrecommandationservice.events.Event;
+//import com.enit.authentication.com.enit.randomrecommandationservice.events.RegisterUserEvent;
+//import com.enit.authentication.com.enit.randomrecommandationservice.events.UpdateUserEvent;
 //import com.enit.authentication.model.Role;
 //import com.enit.authentication.model.User;
-//import com.enit.authentication.repository.RoleRepository;
-//import com.enit.authentication.repository.UserRepository;
+//import com.enit.authentication.com.enit.randomrecommandationservice.repository.RoleRepository;
+//import com.enit.authentication.com.enit.randomrecommandationservice.repository.UserRepository;
 //import org.apache.tomcat.util.http.fileupload.FileUtils;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.kafka.core.KafkaTemplate;

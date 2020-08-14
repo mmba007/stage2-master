@@ -1,0 +1,31 @@
+    
+  PUT /ads
+{
+  "mappings": {
+    "properties": {
+      "requestId":    { "type": "text" },  
+      "recommandationId":  { "type": "text"  }, 
+      "advertiserEmail":   { "type": "keyword"  } ,  
+      "description":   { "type": "text"  } ,
+      "category":    { "type": "keyword" },  
+      "title":  { "type": "text"  }, 
+      "photosUrls":{"type":"text"} ,
+      "price":   { "type":"long"  } ,
+      "advertiserPhoneNumber":    { "type": "integer" },  
+      "country":  { "type": "keyword"  }, 
+      "state":   { "type": "keyword"  } ,  
+      "city":   { "type": "keyword"  } ,
+      "status":    { "type": "keyword" },  
+      "postedOn":  { "type": "keyword"  }, 
+      "adImagesDirectory":   { "type": "text"  },
+      "condition":   { "type": "text"  }  , 
+      "model":   { "type": "text"  } ,
+      "brand":    { "type": "text" },  
+      "views":  { "type": "integer"  }, 
+      "rates":   { "type": "long"  }  ,   
+      "location":   { "type": "geo_point"  }  , 
+       
+    }         
+    }
+  }
+
