@@ -1,9 +1,13 @@
 package com.enit.randomrecommandationservice.services;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.enit.randomrecommandationservice.entity.Ad;
+import com.enit.randomrecommandationservice.entity.Recommandation;
+import com.enit.randomrecommandationservice.entity.Request;
 import com.enit.randomrecommandationservice.events.*;
 
 
@@ -11,7 +15,13 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+
+import org.springframework.data.geo.Point;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.PartitionOffset;
 import org.springframework.kafka.annotation.TopicPartition;
@@ -27,7 +37,7 @@ public class KafkaConsumer {
 	@Autowired
 	AdsService adsService;
 	@Autowired
-	KafkaTemplate<String, String> kafkaTemplate;
+	KafkaTemplate<String, Recommandation> kafkaTemplate;
 //	@Autowired
 //	UserStatusRepository userStatusRepo;
 
@@ -39,7 +49,6 @@ public class KafkaConsumer {
 	@KafkaListener(topicPartitions = {
 			@TopicPartition(topic = "adsToBeConsumed", partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "1")) }, groupId = "group_id2")
 	public void consume(@Payload String message) throws JsonParseException, JsonMappingException, IOException {
-		String json = "{ \"f1\" : \"v1\" } ";
 		Event rootNode = objectMapper.readValue(message, SaveAdEvent.class);
 		switch(rootNode.getType()){
 			case CREATE_AD:
@@ -146,42 +155,49 @@ public class KafkaConsumer {
 //	}
 //
 ////this listener needs to start from beginning. Otherwise if we restart the µservice we must save new ads again.
-//	@KafkaListener(topics = "requestRecommandation", groupId = "group_id1")
-//	public void consumeRequest(@Payload String requestString)
-//			throws JsonParseException, JsonMappingException, IOException {
-//		ObjectMapper mapper = new ObjectMapper();
-//
-//		StringBuilder sb = new StringBuilder(requestString);
-//		String user_idJson = "{" + sb.substring(sb.indexOf(",") + 1);
-//		String user_id = user_idJson.substring(user_idJson.indexOf(":") + 2, user_idJson.indexOf("}") - 1);
-//		String requestId = sb.substring(sb.indexOf(":") + 2, sb.indexOf(",") - 1);
-//		List<Ad> listAds = adsService.getAllAds();
-//		System.out.println("Request to be saved is : userId: " + user_id + " & requestId: " + requestId);
-//		// System.out.println("ahla");
-//		System.out.println("There is " + listAds.size() + " ads saved in memory");
-////		System.out.println("*****ad to be send to recommandation topic is :");
-////		Ad someAd = listAds.get(0);
-////		System.out.println(someAd.toString());
-//
-//		// This is why we called this microservice:RandomRecommandation
-//		Random ran = new Random();
-//
-//		int nxt;
-//		Ad ad;
-//		Object[] listAdsArray = listAds.toArray();
-//		for (int i = 0; i < 6; i++) {
-//			nxt = ran.nextInt(listAds.size());
-//
-//			ad = (Ad) listAdsArray[nxt];
-//			ad.setRequestId(requestId);
-////				ad =new Gson().fromJson(ad.toString(), Ad.class);
-//			// Converting the Object to JSONString
-//			String adString = mapper.writeValueAsString(ad);
-//			kafkaTemplate.send("recommandation", adString);
-////				kafkaTemplate.send("recommandation",
-////						ad.toString().substring(0, ad.toString().indexOf("}")) + ",\"requestId\":" + requestId + "}");
-//
-//		}
-//
-//	}
+	@KafkaListener(topics = "requestRecommandation", groupId = "group_id1")
+	public void consumeRequest(@Payload String requestString)
+			throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		Request request = mapper.readValue(requestString, Request.class);
+
+     	String user_id = request.getUsername();
+      	String requestId =request.getRequestId();
+		List<Ad> listAds1 = adsService.findByLocationNear(new Point(request.getLon(),request.getLar()),new Distance(10	, Metrics.MILES));
+        Ad ad=adsService.findone();
+        System.out.println(ad);
+		System.out.println("There is " + listAds1.size() + "  listAds1");
+//		List<Recommandation>listRec=listAds.stream().map(ads -> new Recommandation(ads)).collect(Collectors.toList());
+		System.out.println("Request to be saved is : userId: " + user_id + " & requestId: " + requestId+" "+request.getLar());
+		System.out.println(request);
+        System.out.println();
+//		System.out.println("*****ad to be send to recommandation topic is :");
+//		Ad someAd = listAds.get(0);
+//		System.out.p	rintln(someAd.toString());
+        if(listAds1.size()>0) {// This is why we called this microservice:RandomRecommandation
+			List<Recommandation>listRec=listAds1.stream().map(ads -> new Recommandation(ads)).collect(Collectors.toList());
+
+			Random ran = new Random();
+
+
+            int nxt;
+            Recommandation rec;
+            Object[] listAdsArray = listRec.toArray();
+            for (int i = 0; i < 1; i++) {
+                nxt = ran.nextInt(listRec.size());
+
+                rec = (Recommandation) listAdsArray[nxt];
+                rec.setRequest_id(requestId);
+                rec.setRecommandation_id(Integer.toString(i));
+//				ad =new Gson().fromJson(ad.toString(), Ad.class);
+                // Converting the Object to JSONString
+				System.out.println(Integer.toString(i));
+                String adString = mapper.writeValueAsString(rec);
+                kafkaTemplate.send("recommandation", rec);
+//				kafkaTemplate.send("recommandation",
+//						ad.toString().substring(0, ad.toString().indexOf("}")) + ",\"requestId\":" + requestId + "}");
+
+            }
+        }
+	}
 }

@@ -1,9 +1,13 @@
 package com.enit.randomrecommandationservice.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.enit.randomrecommandationservice.entity.Ad;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +28,9 @@ public class AdsController {
 //	@Autowired
 //	UserStatusRepository userStatusRepo;
    @GetMapping(value = "/test")
-	public String test()
+   public List<Ad> test()
    {
-   	return "hello from random";
+	   return adService.findByLocationNear(new Point(36.88,10.099),new Distance(100, Metrics.KILOMETERS));
    }
 
 	@GetMapping(value = "/ad/{id}")

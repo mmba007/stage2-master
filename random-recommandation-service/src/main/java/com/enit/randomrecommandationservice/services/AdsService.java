@@ -2,6 +2,9 @@ package com.enit.randomrecommandationservice.services;
 
 import com.enit.randomrecommandationservice.entity.Ad;
 
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +13,9 @@ import java.util.Optional;
 public interface AdsService {
 
 	public void saveAd(Ad ad);
+
+	public Ad findone();
+
 
 	public void saveAllAds(List<Ad> ads);
 
@@ -22,5 +28,7 @@ public interface AdsService {
 	public String deleteAd(String id);
 
 	public void deleteAllAds();
+
+	public List<Ad> findByLocationNear(Point p, Distance d);
 
 }
