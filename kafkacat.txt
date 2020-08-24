@@ -1,10 +1,11 @@
 docker run -it --network="backend_default" --name="consumer" confluentinc/cp-kafkacat bash
-kafkacat -b localhost:19092 -t 
+
+kafkacat -b localhost:19092 -t userEvent
 
 docker restart consumer 
 docker exec -it consumer bash
 
-docker exec -it 90562ece7b84   bash
+docker exec -it 90562ece7b84  bash
 usr/bin/kafka-topics --list --zookeeper zookeeper:2181
 /usr/bin/kafka-topics --delete --zookeeper zookeeper:2181 --topic adsToBeConsumed
 https://medium.com/%E3%84%9A%E5%8C%97%E7%9A%84%E6%89%80%E8%A6%8B%E6%89%80%E8%81%9E/create-kafka-topic-cf03a9b438af

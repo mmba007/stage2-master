@@ -36,13 +36,13 @@ public class Controller {
 //		Boolean status = new RestTemplate().getForObject(url, Boolean.class);
 
 //		if (true) {
-			i++;
-			id = Integer.toString(i);
-			Double[] location=new Double[]{lat,lon};
-			ConsumerRequest consumerRequest = new ConsumerRequest(id ,username,lat,lon);
-			kafkaTemplate.send("requestRecommandation", consumerRequest);
+					i++;
+					id = Integer.toString(i);
+					Double[] location=new Double[]{lat,lon};
+					ConsumerRequest consumerRequest = new ConsumerRequest(id ,username,lat,lon);
+					kafkaTemplate.send("requestRecommandation", consumerRequest);
 
-			Thread.sleep(700);
+			Thread.sleep(100);
 //		System.out.println( adsService.findByRequestId(id));
 //		Set<Ad> allAds = new HashSet<Ad>();
 //		List<Ad> ads = adsService.findByRequestId(id);

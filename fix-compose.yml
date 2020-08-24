@@ -1,0 +1,103 @@
+version: "2"
+services:
+
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      - MONGO_INITDB_DATABASE=stage2
+      #- MONGO_INITDB_ROOT_PASSWORD=GH15935746
+      #- MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+
+    ports:
+      - 27017:27017
+
+##############################################################
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    restart: always
+    environment:
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      #     - discovery.seed_hosts=elasticsearch
+      #     - cluster.initial_master_nodes=elasticsearch
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
+##############################################################
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      S_JAVA_OPTS: "-Xms512m -Xmx512m"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.001'
+    #       memory: 3gb
+
+##############################################################
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - 9092:9092
+      - 19092:19092
+    depends_on:
+      - zookeeper
+    restart: always
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
+      #KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9092,LISTENER_HOST://localhost:19092
+      #        KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE
+      KAFKA_CREATE_TOPICS: "usersProfiles:1:1"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_HEAP_OPTS: " -Xmx256m -Xms256m"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.001"
+    #       memory: 3gb
+
+##############################################################
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+##############################################################
+
+  # kafka:
+  #   image: confluentinc/cp-kafka:latest
+  #   ports:
+  #     - 9092:9092
+  #   depends_on:
+  #     - zookeeper
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
+  #     KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
+  #     KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
+  #     KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #     KAFKA_HEAP_OPTS: " -Xmx256m -Xms256m"

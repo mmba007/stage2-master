@@ -3,6 +3,7 @@ package com.enit.randomrecommandationservice.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.enit.randomrecommandationservice.entity.ListRecommandation;
 import com.enit.randomrecommandationservice.entity.Recommandation;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -53,7 +54,7 @@ public class KafkaConsumerConfig {
 	}
 
 	@Bean
-	public KafkaTemplate<String, Recommandation> kafkaTemplate() {
+	public KafkaTemplate<String, ListRecommandation> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 

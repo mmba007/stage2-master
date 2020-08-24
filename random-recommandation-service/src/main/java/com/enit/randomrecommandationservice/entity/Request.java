@@ -1,7 +1,9 @@
 package com.enit.randomrecommandationservice.entity;
 
+import java.util.List;
+
 public class Request {
-    private String requestId;;
+    private List<String> preferences;
     private String username;
     private Double lon ;
     private Double lar;
@@ -14,8 +16,19 @@ public class Request {
         return lar;
     }
 
+    public List<String> getPreferences() {
+        return preferences;
+    }
+
+    public Request(List<String> preferences, String username, Double lon, Double lar) {
+        this.preferences = preferences;
+        this.username = username;
+        this.lon = lon;
+        this.lar = lar;
+    }
+
     public Request(String requestId, String username, Double lan, Double lar) {
-        this.requestId = requestId;
+
         this.username = username;
         this.lon = lon;
         this.lar=lar;
@@ -23,13 +36,6 @@ public class Request {
 
 
 
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -44,7 +50,6 @@ public class Request {
     @Override
     public String toString() {
         return "Request{" +
-                "requestId='" + requestId + '\'' +
                 ", username='" + username + '\'' +
                 ", lon=" + lon +
                 ", lar=" + lar +
@@ -54,8 +59,5 @@ public class Request {
     public Request() {
     }
 
-    public Request(String request_id, String username) {
-        this.requestId = request_id;
-        this.username = username;
-    }
+
 }

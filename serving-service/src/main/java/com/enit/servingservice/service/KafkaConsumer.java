@@ -1,7 +1,10 @@
 package com.enit.servingservice.service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.enit.servingservice.entity.ListRecommandation;
 import com.enit.servingservice.entity.Ad;
 import com.enit.servingservice.entity.Recommandation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +33,18 @@ public class KafkaConsumer {
 	@KafkaListener(topics = "recommandation", groupId = "group_id")
 	public void consumeRequest(@Payload String recString) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-//		StringBuilder sb = new StringBuilder(recString);
-//		recString = sb.substring(0, sb.indexOf("}"));
-//		recString = recString + ",\"recommandationId\":" + i + "}";
 		System.out.println("recString: "+recString);
-		Recommandation rec = mapper.readValue(recString, Recommandation.class);
-		rec.getAd().setRecommandationId(Integer.toString(i));
-		i++;
-		rec.getAd().setRequestId(rec.getRequest_id());
-		rec.getAd().setRecommandationId(rec.getRecommandation_id());
-		adsService.saveAd(rec.getAd());
+		ListRecommandation list = mapper.readValue(recString, ListRecommandation.class);
+		list.getListRecommandation().forEach(rec -> {rec.getAd().setRecommandationId(Integer.toString(i));rec.getAd().setRequestId(rec.getRequest_id());i++;});
+
+
+//
+//		rec.getAd().setRecommandationId(Integer.toString(i));
+//		i++;
+//		rec.getAd().setRequestId(rec.getRequest_id());
+//		rec.getAd().setRecommandationId(rec.getRecommandation_id());
+		List<Ad> ads=list.getListRecommandation().stream().map(rec->rec.getAd()).collect(Collectors.toList());
+		adsService.saveAllAds(ads);
 
 		System.out.println("Recommandation saved in memory");
 
