@@ -4,5 +4,6 @@ public enum EventName {
        REGISTER_USER,
        UPDATE_USER,
        DELETE_USER,
+       LOGGED_IN_USER,
 
 }

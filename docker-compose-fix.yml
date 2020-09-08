@@ -21,10 +21,7 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     #command: 
      # - elastic-mapping.sh 
-    deploy:
-      resources:
-        limits:
-          memory: 3gb
+
 
  
 
@@ -97,17 +94,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8888:8888"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.001'
-          memory: 3gb
+
 
   ############################################
   mysql:
       image: mysql:latest
       ports:
-        - "3306:3306"
+        - "3307:3306"
       environment:
           MYSQL_DATABASE: 'security'
           # So you don't have to use root, but you can if you like
@@ -119,7 +112,8 @@ services:
 
       expose:
         # Opens port 3306 on the container
-        - '3306'
+        - '3307'
+
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
@@ -134,18 +128,14 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
       #KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9094,LISTENER_HOST://192.168.99.100:19092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9094,LISTENER_HOST://localhost:19092
       #        KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE
       KAFKA_CREATE_TOPICS: "usersProfiles:1:1"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_HEAP_OPTS: " -Xmx256m -Xms256m"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.001'
-          memory: 3gb
+
 
   ###################################################################
   discovery-server:
@@ -154,11 +144,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.001'
-          memory: 3gb
 
 ################################################################
 

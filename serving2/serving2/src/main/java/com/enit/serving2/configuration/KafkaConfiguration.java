@@ -22,7 +22,10 @@ public class KafkaConfiguration {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
-
+		props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG,"500000");
+		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,"2");
+		props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG,"30000");
+		props.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG,"25000");
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		return props;

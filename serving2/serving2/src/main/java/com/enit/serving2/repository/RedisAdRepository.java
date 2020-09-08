@@ -29,8 +29,8 @@ public class RedisAdRepository {
     public Ad findById(String id,String username){
         return (Ad) hashOperations.get(username, id);
     }
-    public void delete(String id,String username){
-        hashOperations.delete(username, id);
+    public void delete(String username){
+        redisTemplate.delete(username);
     }
 
 

@@ -160,7 +160,7 @@ public class KafkaConsumer {
 
 				Request request = objectMapper.readValue(requestString, Request.class);
 				String user_id = request.getUsername();
-				List<Ad> listAds1 = adsService.findByLocationNear(new Point(request.getLon(),request.getLar()),new Distance(10	, Metrics.MILES));
+				List<Ad> listAds1 = adsService.findByLocationNear(new Point(request.getLon(),request.getLar()),new Distance(100	, Metrics.MILES));
 				System.out.println("There is " + listAds1.size() + "  listAds1");
 				System.out.println(request);
 

@@ -1,0 +1,12 @@
+scrape_configs:
+  - job_name: 'application'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['192.168.99.100:8098']
+rule_files:
+  - 'rules.yml'
+alerting:
+   alertmanagers:
+     - static_configs: 
+         - targets:
+             - alertmanager:9093 

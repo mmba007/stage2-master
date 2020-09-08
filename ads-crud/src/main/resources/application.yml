@@ -1,11 +1,13 @@
 server:
-  port: 8050
+    port: 8050
 spring:
   kafka:
     consumer:
-      bootstrap-servers: { $BOOTSTRAP_SERVER:localhost:9092 }
+      bootstrap-servers: {$BOOTSTRAP_SERVER:localhost:19092}
       group-id: ${GROUP_ID:group_id}
       auto-offset-reset: earliest
+
+
 
   data:
     elasticsearch:
@@ -20,12 +22,13 @@ spring:
       uris: localhost:9200
 lbMarketing:
   app:
-    jwtSecret: { $SECRET:jwtlbMarketingSecretKey }
-    jwtExpiration: { $EXPIRATION:86400 }
+    jwtSecret: {$SECRET:jwtlbMarketingSecretKey}
+    jwtExpiration: {$EXPIRATION:86400}
 security:
-  basic:
-    enable: false
-  ignored: /**
+    basic:
+       enable: false
+    ignored: /**
+
 
 BOOTSTRAP_SERVER: localhost
 BOOTSTRAP_PORT: 19092
@@ -35,4 +38,3 @@ ELASTIC_PORT: 9200
 CLUSTER_NAME: docker-cluster
 SECRET: jwtlbMarketingSecretKey
 EXPIRATION: 86400
-# eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/

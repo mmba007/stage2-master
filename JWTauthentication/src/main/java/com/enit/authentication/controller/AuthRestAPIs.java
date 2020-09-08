@@ -5,6 +5,7 @@ import java.util.*;
 import javax.validation.Valid;
 
 import com.enit.authentication.events.Event;
+import com.enit.authentication.events.LogInUserEvent;
 import com.enit.authentication.events.RegisterUserEvent;
 import com.enit.authentication.message.request.LoginForm;
 import com.enit.authentication.message.request.SignUpForm;
@@ -72,6 +73,7 @@ public class AuthRestAPIs {
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 ///////////////////////////////////////Add user to kafka topic/////////////////////////////////
+		kafkaTemplate.send("login-logout", new LogInUserEvent(loginRequest.getUsername(),12.099,36.8));
 
 		//List<String> preferences = userRepository.findByUsername(loginRequest.getUsername()).get().getPreferences();
 //

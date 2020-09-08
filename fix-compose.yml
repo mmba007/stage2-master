@@ -79,25 +79,10 @@ services:
 ##############################################################
 
   redis:
-    image: redis
-    ports:
-      - "6379:6379"
+   image: redis
+   ports:
+     - "6379:6379"
 
 ##############################################################
 
-  # kafka:
-  #   image: confluentinc/cp-kafka:latest
-  #   ports:
-  #     - 9092:9092
-  #   depends_on:
-  #     - zookeeper
-  #   environment:
-  #     KAFKA_BROKER_ID: 1
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
-  #     KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
-  #     KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
-  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
-  #     KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE
-  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #     KAFKA_HEAP_OPTS: " -Xmx256m -Xms256m"
+
