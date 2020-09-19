@@ -13,7 +13,7 @@ public class UpdateAdEvent extends Event {
 
 	private String id;
 	private String advertiserEmail;
-	private String category;
+	private List<String> category;
 	private String title;
 	private String description;
 	private List<String> photosUrls = new ArrayList<String>();
@@ -83,11 +83,11 @@ public class UpdateAdEvent extends Event {
 		this.advertiserEmail = advertiserEmail;
 	}
 
-	public String getCategory() {
+	public List<String> getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(List<String> category) {
 		this.category = category;
 	}
 

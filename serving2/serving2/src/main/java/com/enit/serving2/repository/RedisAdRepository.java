@@ -38,6 +38,7 @@ public class RedisAdRepository {
         return hashOperations.values(username);
     }
     public Map<String, List<Ad>> multiGetAds(List<String> adIds,String username){
+
         Map<String, List<Ad>> adMap = new HashMap<>();
         List<Object> ads = hashOperations.multiGet(username, adIds);
         for (int i = 0; i < adIds.size(); i++) {

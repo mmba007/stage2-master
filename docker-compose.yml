@@ -1,6 +1,7 @@
 version: '3'
 services:
 
+##############################################################
 
   authentication:
     build:
@@ -11,10 +12,12 @@ services:
     ports:
       - "8098:8098"
     network_mode: host
-    depends_on: 
-      - mysql
+    # depends_on: 
+    #   - mysql
     # environment:
     #   SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/security?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
+
+##############################################################
 
   serving:
     build:
@@ -25,6 +28,7 @@ services:
     ports:
       - "8051:8051"
   
+##############################################################
 
   random-recommandation:
     build:
@@ -34,3 +38,4 @@ services:
     restart: always
     ports:
       - "8049:8049"
+

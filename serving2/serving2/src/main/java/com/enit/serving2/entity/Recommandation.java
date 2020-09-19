@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Recommandation implements Serializable {
 
     private Ad ad;
-    private String username;
+//    private String username;
 
 
 
@@ -13,9 +13,9 @@ public class Recommandation implements Serializable {
         this.ad = ad;
     }
 
-    public String getUsername() {
-        return username;
-    }
+//    public String getUsername() {
+//        return username;
+//    }
 
     public Ad getAd() {
         return ad;
@@ -24,10 +24,10 @@ public class Recommandation implements Serializable {
     public Recommandation() {
     }
 
-    public Recommandation(Ad ad, String username) {
-        this.ad = ad;
-        this.username =username;
-    }
-
+//    public Recommandation(Ad ad, String username) {
+//        this.ad = ad;
+//        this.username =username;
+//    }
+//
 
 }

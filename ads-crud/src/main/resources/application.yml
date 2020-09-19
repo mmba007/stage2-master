@@ -1,11 +1,19 @@
 server:
     port: 8050
 spring:
-  kafka:
-    consumer:
-      bootstrap-servers: {$BOOTSTRAP_SERVER:localhost:19092}
-      group-id: ${GROUP_ID:group_id}
-      auto-offset-reset: earliest
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:19092
+      bindings:
+        events-out:
+          destination: login-logout
+          contentType: application/json
+
+#  zipkin:
+#    base-url: http://localhost:9411/
+
 
 
 
@@ -28,7 +36,6 @@ security:
     basic:
        enable: false
     ignored: /**
-
 
 BOOTSTRAP_SERVER: localhost
 BOOTSTRAP_PORT: 19092

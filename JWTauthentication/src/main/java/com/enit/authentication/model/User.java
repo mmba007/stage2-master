@@ -25,21 +25,21 @@ public class User {
     @Size(min = 6, max = 100)
     private String password;
 
-    @Email
-    @Size(max = 50)
-    @NotBlank
+//    @Email
+//    @Size(max = 50)
+//    @NotBlank
     private String email;
 
     @ManyToMany
     @JoinTable(name="user_roles" , joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles =new HashSet<>();
 
-    @NotBlank
-    @Size(min = 3, max = 50)
+//    @NotBlank
+//    @Size(min = 3, max = 50)
     private String firstName;
 
-    @NotBlank
-    @Size(min = 3, max = 50)
+//    @NotBlank
+//    @Size(min = 3, max = 50)
     private String lastName;
 
     private Date signupDate;

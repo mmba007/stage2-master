@@ -18,7 +18,7 @@ public class Ad {
 
 
 	private String advertiserEmail;
-	private String category;
+	private List<String> category;
 	private String title;
 	private String description;
 	private List<String> photosUrls = new ArrayList<String>();
@@ -99,11 +99,11 @@ public class Ad {
 		this.advertiserEmail = advertiserEmail;
 	}
 
-	public String getCategory() {
+	public List<String> getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(List<String> category) {
 		this.category = category;
 	}
 
@@ -203,7 +203,7 @@ public class Ad {
 		this.rates = rates;
 	}
 
-	public Ad(String id,String category ,String title, String description, int price, int advertiserPhoneNumber, String country, String state, String city, Status status, String adImagesDirectory, String condition, String model, String brand, int views, float rate, GeoPoint location) {
+	public Ad(String id,List<String> category ,String title, String description, int price, int advertiserPhoneNumber, String country, String state, String city, Status status, String adImagesDirectory, String condition, String model, String brand, int views, float rate, GeoPoint location) {
 		this.category = category;
 		this.title = title;
 		this.description = description;
@@ -247,8 +247,8 @@ public class Ad {
 
 	}
 
-	public Ad(String advertiserEmail, List<String> photosUrls, String category, int price, String title, String country,
-			String state, String city) {
+	public Ad(String advertiserEmail, List<String> photosUrls, List<String> category, int price, String title, String country,
+			  String state, String city) {
 		super();
 		this.advertiserEmail = advertiserEmail;
 		this.photosUrls = photosUrls;

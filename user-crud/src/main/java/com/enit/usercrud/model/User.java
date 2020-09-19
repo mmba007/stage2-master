@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 //		@UniqueConstraint(columnNames = { "email" }) })
 
 @Component
-@Document(indexName = "users", type = "_doc")
+@Document(indexName = "users")
 public class User {
 	
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,11 +90,20 @@ public class User {
 
 //	@ElementCollection
 	private List<String> preferences = new ArrayList<String>();
+	// implicite preferences
+	private List<String> impPreferences = new ArrayList<String>();
 
+	public void setImpPreferences(List<String> impPreferences) {
+		this.impPreferences = impPreferences;
+	}
 //	public String getGender() {
 //		return gender;
 //	}
 //
+
+	public List<String> getImpPreferences() {
+		return impPreferences;
+	}
 //	public void setGender(String gender) {
 //		this.gender = gender;
 //	}
@@ -163,13 +172,13 @@ public class User {
 //
 //	private List<String> viewedAds = new ArrayList<String>();
 //
-//	public List<String> getPreferences() {
-//		return preferences;
-//	}
-//
-//	public void setPreferences(List<String> preferences) {
-//		this.preferences = preferences;
-//	}
+	public List<String> getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(List<String> preferences) {
+		this.preferences = preferences;
+	}
 //
 //	public List<String> getLikedAds() {
 //		return likedAds;

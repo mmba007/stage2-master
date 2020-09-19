@@ -28,7 +28,7 @@ public ConsumerFactory<String, String> consumerFactory(){
 
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.99.100:19092");
     config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_one");
     config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);

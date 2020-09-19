@@ -4,6 +4,7 @@ services:
       image: mysql:latest
       ports:
         - "3306:3306"
+      restart: always
       environment:
           MYSQL_DATABASE: 'security'
           # So you don't have to use root, but you can if you like

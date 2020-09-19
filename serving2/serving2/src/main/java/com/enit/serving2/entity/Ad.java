@@ -14,9 +14,8 @@ import java.util.List;
 public class Ad implements Serializable {
 
 	private String id;
-	private String requestId;
 	private String advertiserEmail;
-	private String category;
+	private List<String> category;
 	private String title;
 	private String description;
 	private List<String> photosUrls = new ArrayList<String>();
@@ -34,6 +33,15 @@ public class Ad implements Serializable {
 	private int views;
 	private List<Float> rates = new ArrayList<Float>();
 	private float rate;
+
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
+
+	public float getRate() {
+		return rate;
+	}
+
 	private Double[] location;
 
 
@@ -45,13 +53,7 @@ public class Ad implements Serializable {
 		this.id = id;
 	}
 
-	public String getRequestId() {
-		return requestId;
-	}
 
-	public void setRequestId(String requestId) {
-		this.requestId = requestId;
-	}
 
 //	public String getRecommandationId() {
 //		return recommandationId;
@@ -69,11 +71,11 @@ public class Ad implements Serializable {
 		this.advertiserEmail = advertiserEmail;
 	}
 
-	public String getCategory() {
+	public List<String> getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(List<String> category) {
 		this.category = category;
 	}
 
@@ -205,13 +207,6 @@ public class Ad implements Serializable {
 		this.rates = rates;
 	}
 
-	public float getRate() {
-		return rate;
-	}
-
-	public void setRate(float rate) {
-		this.rate = rate;
-	}
 
 	public Double[] getLocation() {
 		return location;
@@ -227,13 +222,13 @@ public class Ad implements Serializable {
 		super();
 	}
 
-	public Ad(String id, String requestId,  String advertiserEmail, String category,
-			String title, String description, List<String> photosUrls, int price, int advertiserPhoneNumber,
-			String country, String state, String city, String status, Date postedOn, String adImagesDirectory,
-			String condition, String model, String brand, int views, List<Float> rates, float rate, Double[] location) {
+	public Ad(String id,  String advertiserEmail, List<String> category,
+			  String title, String description, List<String> photosUrls, int price, int advertiserPhoneNumber,
+			  String country, String state, String city, String status, Date postedOn, String adImagesDirectory,
+			  String condition, String model, String brand, int views, List<Float> rates, Double[] location) {
 		super();
 		this.id = id;
-		this.requestId = requestId;
+
 //		this.recommandationId = recommandationId;
 		this.advertiserEmail = advertiserEmail;
 		this.category = category;
@@ -253,21 +248,21 @@ public class Ad implements Serializable {
 		this.brand = brand;
 		this.views = views;
 		this.rates = rates;
-		this.rate = rate;
+
 		this.location = location;
 
 	}
 
 	@Override
 	public String toString() {
-		return "{\"id\": \"" + id + "\", \"requestId\":\"" + requestId  + "\", \"advertiserEmail\":\"" + advertiserEmail + "\", \"category\":\"" + category
+		return "{\"id\": \"" + id + "\", \"advertiserEmail\":\"" + advertiserEmail + "\", \"category\":\"" + category
 				+ "\", \"title\":\"" + title + "\", \"description\":\"" + description + "\", \"photosUrls\":\""
 				+ photosUrls + "\", \"price\":\"" + price + "\", \"advertiserPhoneNumber\":\"" + advertiserPhoneNumber
 				+ "\", \"country\":\"" + country + "\", \"state\":\"" + state + "\", \"city\":\"" + city
 				+ "\", \"status\":\"" + status + "\", \"postedOn\":\"" + postedOn + "\", \"adImagesDirectory\":\""
 				+ adImagesDirectory + "\", \"condition\":\"" + condition + "\", \"model\":\"" + model
 				+ "\", \"brand\":\"" + brand + "\", \"views\":\"" + views + "\", \"rates\":\"" + rates
-				+ "\", \"rate\":\"" + rate + "\", \"location\":\"" + location
+				+  "\", \"location\":\"" + location
 				+  "}";
 	}
 

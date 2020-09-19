@@ -2,3 +2,11 @@ docker exec -it mongodb mongo
 db.advertiser.find({location: { $geoWithin: { $center: [ [-74 , 40.47  ] , 10 ] }}})
 
 
+db.advertiser.aggregate([{$geoNear:{near:{type:"Point", coordinates: [10.09,36.8] },distanceField:"location",maxDistance:40    }} ,{$unwind:{path:"$category",preserveNullAndEmptyArrays: true }},{$group: {_id:"$category",avegeView:{$avg:"$views"}   }}   ])
+
+
+db.advertiser.aggregate([{$geoNear:{near:{type:"Point", coordinates: [10.09,36.8] }, distanceField:"location",maxDistance:40    }} ])
+
+db.places.find( { loc: { $geoWithin: { $centerSphere: [ [ 36.8,10.099 ] , 100 / 3963.2 ] } } } )     
+
+db.advertiser.aggregate([{$geoNear:{near:{type:"Point", coordinates: [36.8,10.099] },distanceField:"location",maxDistance:4000000    }} ,{$unwind:{path:"$category",preserveNullAndEmptyArrays: true }},{ $match : { "$category" : "car" } }   ])

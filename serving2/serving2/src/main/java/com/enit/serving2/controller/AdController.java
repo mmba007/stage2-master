@@ -1,6 +1,7 @@
 package com.enit.serving2.controller;
 
 
+import com.enit.serving2.configuration.EventService;
 import com.enit.serving2.entity.Ad;
 import com.enit.serving2.entity.ConsumerRequest;
 import com.enit.serving2.entity.Recommandation;
@@ -10,6 +11,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -19,7 +21,7 @@ public class AdController {
     private int counter=0;
 
     @Autowired
-    KafkaTemplate<String, ConsumerRequest> kafkaTemplate;
+    private EventService kafkaTemplate;
 
     @Autowired
     RedisAdRepository adsService;
@@ -27,12 +29,12 @@ public class AdController {
     @Autowired
     private RedisAdRepository adRepository;
 
-    @PostMapping
-    public Ad save(@RequestBody Recommandation rec){
-       adRepository.save(rec.getUsername(),Integer.toString(counter),rec.getAd());
-       counter++;
-        return rec.getAd();
-    }
+//    @PostMapping
+//    public Ad save(@RequestBody Recommandation rec){
+//       adRepository.save(rec.getUsername(),Integer.toString(counter),rec.getAd());
+//       counter++;
+//        return rec.getAd();
+//    }
 
     @GetMapping("/{username}")
     public List list(@PathVariable String username){
@@ -54,11 +56,13 @@ public class AdController {
 
     @GetMapping(value = "/request/{username}/{lat}/{lon}")
     public List<Ad> saveConsumer(@PathVariable String username ,@PathVariable Double lon,@PathVariable Double lat ) throws InterruptedException {
-
+        List<String> preferences= new ArrayList<>();
+        preferences.add("car");
+        preferences.add("food");
 
         Double[] location=new Double[]{lat,lon};
-        ConsumerRequest consumerRequest = new ConsumerRequest(username,lon,lat);
-        kafkaTemplate.send("requestRecommandation", consumerRequest);
+        ConsumerRequest consumerRequest = new ConsumerRequest(username,lon,lat,preferences);
+        kafkaTemplate.sendUserRequest(consumerRequest);
 
 
         return adsService.findAll(username);

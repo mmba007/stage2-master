@@ -1,2 +1,8 @@
 *.log
 test/
+sql-data/
+serving-service/
+folder/
+*.iml
+*.idea
+data/

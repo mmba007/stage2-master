@@ -10,9 +10,15 @@ public class ConsumerRequest implements Serializable {
 	private Double lar;
 	private Double lon;
     private List<String> preferences;
+	private List<String> imPreferences;
+
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
+	}
+
+	public List<String> getPreferences() {
+		return preferences;
 	}
 
 	public ConsumerRequest() {
@@ -23,6 +29,14 @@ public class ConsumerRequest implements Serializable {
 		return lar;
 	}
 
+	public List<String> getImPreferences() {
+		return imPreferences;
+	}
+//
+//	public String getRequestID() {
+//		return requestID;
+//	}
+
 	public Double getLon() {
 		return lon;
 	}
@@ -31,12 +45,13 @@ public class ConsumerRequest implements Serializable {
 		return username;
 	}
 
-	public ConsumerRequest(String requestId, String username, Double lar, Double lon,List<String> preferences) {
-
+	public ConsumerRequest( String username, Double lar, Double lon,List<String> preferences) {
+//        this.requestID=requestId;
 		this.username = username;
 		this.preferences=preferences;
 		this.lar = lar;
 		this.lon = lon;
+
 	}
 
 	public ConsumerRequest(String username, Double lar, Double lon) {

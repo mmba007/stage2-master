@@ -13,9 +13,9 @@ public class SignUpForm {
 	@Size(min = 3, max = 50)
 	private String username;
 
-	@NotBlank
-	@Size(max = 60)
-	@Email
+//	@NotBlank
+//	@Size(max = 60)
+//	@Email
 	private String email;
 
 	private Set<String> role;
@@ -24,15 +24,15 @@ public class SignUpForm {
 	@Size(min = 6, max = 40)
 	private String password;
 
-	@NotBlank
-	@Size(min = 3, max = 50)
+//	@NotBlank
+//	@Size(min = 3, max = 50)
 	private String firstName;
 
-	@NotBlank
-	@Size(min = 3, max = 50)
+//	@NotBlank
+//	@Size(min = 3, max = 50)
 	private String lastName;
 
-	@NotBlank
+//	@NotBlank
 	private String gender;
 
 //    public String getName() {

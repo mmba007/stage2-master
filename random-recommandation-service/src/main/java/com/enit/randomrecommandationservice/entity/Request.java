@@ -7,6 +7,38 @@ public class Request {
     private String username;
     private Double lon ;
     private Double lar;
+    private  String requestID;
+
+    public Request(List<String> preferences, String username, Double lon, Double lar, List<String> imPreferences, String requestID) {
+        this.preferences = preferences;
+        this.username = username;
+        this.lon = lon;
+        this.lar = lar;
+        this.imPreferences = imPreferences;
+        this.requestID=requestID;
+    }
+
+    public void setRequestID(String requestID) {
+        this.requestID = requestID;
+    }
+
+    public String getRequestID() {
+        return requestID;
+    }
+
+    public void setImPreferences(List<String> imPreferences) {
+        this.imPreferences = imPreferences;
+    }
+    private List<String> imPreferences;
+
+
+    public void setPreferences(List<String> preferences) {
+        this.preferences = preferences;
+    }
+
+    public List<String> getImPreferences() {
+        return imPreferences;
+    }
 
     public Double getLon() {
         return lon;

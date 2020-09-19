@@ -2,7 +2,6 @@ package com.enit.usercrud.events;
 
 
 import com.enit.usercrud.model.EventName;
-import com.enit.usercrud.service.ProgramDeserializer;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:19092
+      bindings:
+        login-out:
+          destination: login-logout
+          contentType: application/json
+        events-out:
+          destination: userEvent
+          contentType: application/json
+  zipkin:
+    base-url: http://localhost:9411/
+  jpa:
+     show-sql : true
+     hibernate:
+         ddl-auto : update
+
+     properties:
+        hibernate:
+            dialect: org.hibernate.dialect.MySQL8Dialect
+
+  datasource :
+     driver-class-name: com.mysql.jdbc.Driver
+     url : jdbc:mysql://localhost:3306/security?allowPublicKeyRetrieval=true&useSSL=false
+    #
+    ## Username and password
+     username: root
+     password: root
+server:
+  port: 8098
