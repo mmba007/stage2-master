@@ -9,6 +9,7 @@ import java.util.*;
 import com.enit.adscrud.config.EventService;
 import com.enit.adscrud.entity.Ad;
 import com.enit.adscrud.entity.Status;
+import com.enit.adscrud.events.AdViewedEvent;
 import com.enit.adscrud.events.DeleteAdEvent;
 import com.enit.adscrud.events.Event;
 
@@ -31,8 +32,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import com.enit.adscrud.security.jwt.JwtProvider;
 
 
 @CrossOrigin(origins = "*")
@@ -44,6 +47,9 @@ public class AdsController {
 
 	@Autowired
 	AdsRepository repo;
+
+	@Autowired
+	JwtProvider jwtProvider;
 
 	private final EventService kafkaTemplate;
 
@@ -87,46 +93,66 @@ public class AdsController {
 	@Transactional
 	public String test()
 	{
-	 eserv.saveOneAd(new Ad("2","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.098655)));
-		kafkaTemplate.sendEvent( new SaveAdEvent(new Ad("2","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.098655))));
-//		eserv.saveOneAd(new Ad("3","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(37.800115,12.097655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("3","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(37.800115,12.0976655))));
-//		eserv.saveOneAd(new Ad("4","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(38.800115,10.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("4","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(38.800119,12.099655))));
-//		eserv.saveOneAd(new Ad("4","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800119,12.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("4","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800115,10.099655))));
-//		eserv.saveOneAd(new Ad("5","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("5","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655))));
-//		eserv.saveOneAd(new Ad("6","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,20.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("6","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,20.099655))));
-//		eserv.saveOneAd(new Ad("7","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("7","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655))));
-//		eserv.saveOneAd(new Ad("8","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800115,11.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("8","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800115,11.099655))));
-//		eserv.saveOneAd(new Ad("9","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(44.800115,15.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("9","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(4.800115,15.099655))));
-//		eserv.saveOneAd(new Ad("10","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(30.800115,14.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("10","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(30.800115,14.099655))));
-//		eserv.saveOneAd(new Ad("11","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(29.800115,15.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("11","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(29.800115,15.099655))));
-//		eserv.saveOneAd(new Ad("12","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("12","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655))));
-//		eserv.saveOneAd(new Ad("13","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,11.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("13","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,11.099655))));
-//		eserv.saveOneAd(new Ad("14","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("14","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.099655))));
-//		eserv.saveOneAd(new Ad("15","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("15","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655))));
-//		eserv.saveOneAd(new Ad("16","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,13.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("16","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,13.099655))));
-//		eserv.saveOneAd(new Ad("17","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("17","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,17.099655))));
-//		eserv.saveOneAd(new Ad("18","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,17.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("18","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,17.099655))));
-//		eserv.saveOneAd(new Ad("19","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,19.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("19","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,19.099655))));
-//		eserv.saveOneAd(new Ad("20","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655)));
-//		kafkaTemplate.send("adsToBeConsumed", new SaveAdEvent(new Ad("20","car","mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655))));
+	 	eserv.saveOneAd(new Ad("2", Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.098655)));
+		kafkaTemplate.sendEvent( new SaveAdEvent(new Ad("2", Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.098655))));
+
+		eserv.saveOneAd(new Ad("3",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(37.800115,12.097655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("3",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(37.800115,12.0976655))));
+
+		eserv.saveOneAd(new Ad("4",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(38.800115,10.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("4",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(38.800119,12.099655))));
+
+		eserv.saveOneAd(new Ad("4",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800119,12.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("4",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800115,10.099655))));
+
+		eserv.saveOneAd(new Ad("5",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("5",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655))));
+
+		eserv.saveOneAd(new Ad("6",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,20.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("6",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,20.099655))));
+
+		eserv.saveOneAd(new Ad("7",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("7",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655))));
+
+		eserv.saveOneAd(new Ad("8",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800115,11.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("8",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(39.800115,11.099655))));
+
+		eserv.saveOneAd(new Ad("9",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(44.800115,15.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("9",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(4.800115,15.099655))));
+
+		eserv.saveOneAd(new Ad("10",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(30.800115,14.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("10",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(30.800115,14.099655))));
+
+		eserv.saveOneAd(new Ad("11",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(29.800115,15.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("11",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(29.800115,15.099655))));
+
+		eserv.saveOneAd(new Ad("12",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("12",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655))));
+
+		eserv.saveOneAd(new Ad("13",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,11.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("13",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,11.099655))));
+
+		eserv.saveOneAd(new Ad("14",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("14",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,12.099655))));
+
+		eserv.saveOneAd(new Ad("15",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("15",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,14.099655))));
+
+		eserv.saveOneAd(new Ad("16",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,13.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("16",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,13.099655))));
+
+		eserv.saveOneAd(new Ad("17",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("17",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,17.099655))));
+
+		eserv.saveOneAd(new Ad("18",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,17.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("18",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,17.099655))));
+
+		eserv.saveOneAd(new Ad("19",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,19.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("19",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,19.099655))));
+
+		eserv.saveOneAd(new Ad("20",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655)));
+		kafkaTemplate.sendEvent(new SaveAdEvent(new Ad("20",Collections.singletonList("car"),"mercedes amg c63 for sale","clean car for sale in dubai 60,000 km",100000,25691503,"Dubai","Dubai","Dubai", Status.ACTIVE,"c","clean","2018","mercedes",100,4,new GeoPoint(36.800115,15.099655))));
+
 
 
 
@@ -153,11 +179,40 @@ public class AdsController {
 //	{
 //		return "test passed successfully";
 //	}
+
+
+// public String updateUserPreferences(@RequestBody ListPreferences newPreferences, @RequestHeader("Authorization") String jwt) {
+// 	System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+// 	jwt=jwt.substring(7);//to eliminate "Bearer " from token string
+// 	System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+// 	String username=jwtProvider.getUserNameFromJwtToken(jwt);
+// 	Optional<User> opt=userRepository.findByUsername(username);
+// 	System.out.println(opt.get().getUsername());
+// 			 if (opt.isPresent()) {
+// 		User user = opt.get();
+// 		System.out.println(
+// 				" /*************************************************/ Your user preferences before updating are : ");
+// 		for (String preference : user.getPreferences()) {
+// 			System.out.println("-----------current preference : " + preference);
+// 		}
+
 	@GetMapping(value = "/ad/get/{id}")
-	public Optional<Ad> getAds(@PathVariable String id) {
+	public Optional<Ad> getAds(@PathVariable String id, @RequestHeader("Authorization") String jwt) {
+		System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+			jwt=jwt.substring(7);//to eliminate "Bearer " from token string
+			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+			String username=jwtProvider.getUserNameFromJwtToken(jwt);
 		Optional<Ad> ad = eserv.findById(id);
+		kafkaTemplate.sendViewEvent(new AdViewedEvent(username,id));
 		return ad;
 	}
+
+
+	// @GetMapping(value = "/ad/get/{id}")
+	// public Optional<Ad> getAds(@PathVariable String id) {
+	// 	Optional<Ad> ad = eserv.findById(id);
+	// 	return ad;
+	// }
 //
 	@GetMapping(value = "/ad/{email}/{id}")
 	public Ad getAdById(@PathVariable String email, @PathVariable String id) {

@@ -10,3 +10,6 @@ db.advertiser.aggregate([{$geoNear:{near:{type:"Point", coordinates: [10.09,36.8
 db.places.find( { loc: { $geoWithin: { $centerSphere: [ [ 36.8,10.099 ] , 100 / 3963.2 ] } } } )     
 
 db.advertiser.aggregate([{$geoNear:{near:{type:"Point", coordinates: [36.8,10.099] },distanceField:"location",maxDistance:4000000    }} ,{$unwind:{path:"$category",preserveNullAndEmptyArrays: true }},{ $match : { "$category" : "car" } }   ])
+
+
+db.advertiser.createIndex( { location : "2dsphere" } )

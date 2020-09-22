@@ -24,4 +24,12 @@ public class EventService {
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build());
     }
+
+    public void sendViewEvent(final Event viewEvent) {
+        MessageChannel messageChannel = myStreams.outboundViewEvent();
+        messageChannel.send(MessageBuilder
+                .withPayload(viewEvent)
+                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+                .build());
+    }
 }

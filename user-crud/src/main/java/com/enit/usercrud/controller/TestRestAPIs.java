@@ -3,6 +3,8 @@ package com.enit.usercrud.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.enit.usercrud.config.EventService;
+import com.enit.usercrud.events.UpdateUserEvent;
 import com.enit.usercrud.message.ListPreferences;
 import com.enit.usercrud.model.User;
 import com.enit.usercrud.repository.RoleRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -31,7 +34,8 @@ public class TestRestAPIs {
 	PasswordEncoder encoder;
 
 	@Autowired
-	KafkaTemplate<String, String> kafkaTemplate;
+	EventService kafkaTemplate;
+	// KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
 	JwtProvider jwtProvider;
@@ -45,11 +49,11 @@ public class TestRestAPIs {
 //		System.out.println(usr);
 //	}return users;
 //	}
-//	
+//
 //	@GetMapping("/api/user/{username}")
 //	public Optional<User> getUser(@PathVariable String username){
 //	Optional<User> user=userServiceImpl.findByUserName(username);
-//	
+//
 //		System.out.println(user.get());
 //	return user;
 //	}
@@ -257,11 +261,15 @@ public class TestRestAPIs {
 //	}
 
 	@PutMapping("/api/user/update/preferences")
+	@Transactional
 //	@PreAuthorize("hasRole('USER')")
-	public String updateUserPreferences(@RequestBody List<String> newPreferences, @RequestHeader("Authorization") String jwt) {
-		jwt=jwt.substring(7);
+	public String updateUserPreferences(@RequestBody ListPreferences newPreferences, @RequestHeader("Authorization") String jwt) {
+		System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+		jwt=jwt.substring(7);//to eliminate "Bearer " from token string
+		System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
 		String username=jwtProvider.getUserNameFromJwtToken(jwt);
 		Optional<User> opt=userRepository.findByUsername(username);
+		System.out.println(opt.get().getUsername());
          if (opt.isPresent()) {
 			User user = opt.get();
 			System.out.println(
@@ -270,10 +278,12 @@ public class TestRestAPIs {
 				System.out.println("-----------current preference : " + preference);
 			}
 
-			user.setPreferences(newPreferences);
+			// user.setPreferences(newPreferences);
+			user.setPreferences(newPreferences.getNewPreferences());
 			userRepository.save(user);
 
 			//kafkaTemplate.send("userEvent", new UpdateUserPreferences(username, newPreferences));
+			kafkaTemplate.sendUserPreferences( new UpdateUserEvent(username, newPreferences.getNewPreferences(),user.getImpPreferences()));
 
 			System.out.println("##################### User's preferences updated successfully");
 			return "User's preferences updated successfully";
@@ -283,10 +293,13 @@ public class TestRestAPIs {
 		}
 	}
 
-	@PutMapping("/api/user/update/preferences")
+	// @PutMapping("/api/user/update/preferences")
+	@PutMapping("/api/user/update/impPreferences")
 //	@PreAuthorize("hasRole('USER')")
 	public String updateUserImpPreferences(@RequestBody List<String> newPreferences, @RequestHeader("Authorization") String jwt) {
-		jwt=jwt.substring(7);
+System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+		jwt=jwt.substring(7);//to eliminate "Bearer " from token string
+			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
 		String username=jwtProvider.getUserNameFromJwtToken(jwt);
 		Optional<User> opt=userRepository.findByUsername(username);
 		if (opt.isPresent()) {
@@ -301,6 +314,7 @@ public class TestRestAPIs {
 			userRepository.save(user);
 
 			//kafkaTemplate.send("userEvent", new UpdateUserPreferences(username, newPreferences));
+			kafkaTemplate.sendUserPreferences( new UpdateUserEvent(username,user.getPreferences(),newPreferences));
 
 			System.out.println("##################### User's preferences updated successfully");
 			return "User's imp preferences updated successfully";
@@ -430,7 +444,7 @@ public class TestRestAPIs {
 				} else {
 					return "dont match";
 				}
-	
+
 			} else {
 				System.out.println("User Not Found");
 				return "User not found";
@@ -627,7 +641,7 @@ public class TestRestAPIs {
 		return null;
 
 	}
-	
+
 	@GetMapping("/api/user/allDetailsByEmail/{email}")
 	@PreAuthorize("hasRole('USER')")
 	public User getUserDetailsByEmail(@PathVariable String email) {
@@ -640,7 +654,7 @@ public class TestRestAPIs {
 			return null;
 		}
 	}
-	
+
 	@GetMapping("/api/user/allDetailsById/{id}")
 	@PreAuthorize("hasRole('USER')")
 	public User getUserDetailsById(@PathVariable String id) {
@@ -653,7 +667,7 @@ public class TestRestAPIs {
 			return null;
 		}
 	}
-	
+
 	@GetMapping("/api/user/consumerPreferencesByUsername")
 //	@PreAuthorize("hasRole('USER')")
 	public List<String> getConsumerPreferencesById(@RequestHeader("Authorization") String jwt) {

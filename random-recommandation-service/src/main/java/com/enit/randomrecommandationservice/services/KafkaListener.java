@@ -63,12 +63,14 @@ public class KafkaListener {
 
     @StreamListener(MyStream.INPUT_REQUEST)
     public void handleUserRecommandation(@Payload String requestString) throws JsonProcessingException {
+
         ObjectMapper mapper = new ObjectMapper();
         Request request = mapper.readValue(requestString, Request.class);
+        System.out.println("\n$$$$$$$$$$$$$$$$$$  REQUEST STRING IS: \n"+request+" \n $$$$$$$$$$$$$$$$$$$$$$$$$\n");
         String user_id = request.getUsername();
         List<Ad> listAds1 = adsService.findByLocationNear(new Point(request.getLar(),request.getLon()),new Distance(100	, Metrics.MILES));
-        System.out.println("There is " + listAds1.size() + "  listAds1");
-        System.out.println(request);
+        System.out.println("\nThere is " + listAds1.size() + "  recommandations for "+user_id+"\n");
+        // System.out.println(request);
 
         if(listAds1.size()>0) {// This is why we called this microservice:RandomRecommandation
 

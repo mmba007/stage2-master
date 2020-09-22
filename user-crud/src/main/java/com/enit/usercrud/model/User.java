@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 @Component
 @Document(indexName = "users")
 public class User {
-	
+
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private String id;
@@ -41,6 +41,13 @@ public class User {
 	@Size(max = 50)
 	@Email
 	private String email;
+
+
+	public User(String username) {
+	this.username = username;
+	}
+
+
 
 	public String getPassword() {
 		return password;

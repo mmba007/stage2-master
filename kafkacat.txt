@@ -1,11 +1,22 @@
-docker run -it --network="backend_default" --name="consumer" confluentinc/cp-kafkacat bash
+# Run kafkacat container:
+docker run -it --network="stage2-master_default" --name="consumer" confluentinc/cp-kafkacat bash
 
-kafkacat -b localhost:19092 -t userEvent
+# Or restart it if it's already in use:
+docker restart consumer
 
-docker restart consumer 
+# Enter kafkacat's bash mode:
 docker exec -it consumer bash
 
+# View topic content:
+kafkacat -b localhost:19092 -t userEvent
+
+# Enter kafka's bash mode: run docker ps and get kafka's container id then run this command:
 docker exec -it 90562ece7b84  bash
+
+# List all existant topics
 usr/bin/kafka-topics --list --zookeeper zookeeper:2181
+
+# Delete the topic "adsToBeConsumed":
 /usr/bin/kafka-topics --delete --zookeeper zookeeper:2181 --topic adsToBeConsumed
+
 https://medium.com/%E3%84%9A%E5%8C%97%E7%9A%84%E6%89%80%E8%A6%8B%E6%89%80%E8%81%9E/create-kafka-topic-cf03a9b438af

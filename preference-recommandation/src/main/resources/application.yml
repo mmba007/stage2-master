@@ -22,6 +22,9 @@ spring:
         recommandation_out:
           destination: recommandation
           contentType: text/plain
+        user-event-in:
+          destination: userPreferences
+          contentType: text/plain  
 #  zipkin:
 #    base-url: http://localhost:9411/
   application:

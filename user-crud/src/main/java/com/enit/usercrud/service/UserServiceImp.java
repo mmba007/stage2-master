@@ -13,11 +13,11 @@ public class UserServiceImp implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    public String  saveUser(String username,User user){
-        if(userRepository.findByUsername(username).isPresent())
-            return "username: "+username+" exist !!!!";
+    public String  saveUser(User user){
+        if(userRepository.findByUsername(user.getUsername()).isPresent())
+            return "username: "+user.getUsername()+" exist !!!!";
         userRepository.save(user);
-        return "username:"+username+" is sucessfully saved ";
+        return "username:"+user.getUsername()+" is sucessfully saved ";
     }
 
     public Optional<User> findByUsername(String username){

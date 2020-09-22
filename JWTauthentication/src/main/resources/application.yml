@@ -11,8 +11,8 @@ spring:
         events-out:
           destination: userEvent
           contentType: application/json
-  zipkin:
-    base-url: http://localhost:9411/
+#  zipkin:
+#    base-url: http://localhost:9411/
   jpa:
      show-sql : true
      hibernate:

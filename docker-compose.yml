@@ -7,12 +7,12 @@ services:
     build:
       context: JWTauthentication
       dockerfile: Dockerfile
-   
+
     restart: always
     ports:
       - "8098:8098"
     network_mode: host
-    # depends_on: 
+    # depends_on:
     #   - mysql
     # environment:
     #   SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/security?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
@@ -21,13 +21,13 @@ services:
 
   serving:
     build:
-      context: serving2/serving2
+      context: serving2
       dockerfile: Dockerfile
     network_mode: host
     restart: always
     ports:
       - "8051:8051"
-  
+
 ##############################################################
 
   random-recommandation:
@@ -39,3 +39,24 @@ services:
     ports:
       - "8049:8049"
 
+##############################################################
+
+  preferences-recommandation:
+    build:
+      context: preference-recommandation
+      dockerfile: Dockerfile
+    network_mode: host
+    restart: always
+    ports:
+      - "8048:8048"
+
+##############################################################
+
+  user-crud:
+    build:
+      context: user-crud
+      dockerfile: Dockerfile
+    network_mode: host
+    restart: always
+    ports:
+      - "8099:8099"

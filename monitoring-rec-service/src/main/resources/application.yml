@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:19092
+      bindings:
+        viewed-ads-in:
+          destination: viewedAds
+          contentType: application/json
+        recommandation-in:
+          destination: recommandation
+          contentType: text/plain
+
+#  zipkin:
+#    base-url: http://localhost:9411/
+  application:
+    name: monitoring-recommandations-service
+server:
+  port: 8095
