@@ -1,22 +1,17 @@
-package com.enit.monitoringRec.entity;
+package com.enit.randomRec.events;
 
 
-import org.springframework.stereotype.Component;
-
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-@Component
+import com.enit.randomRec.entity.Ad;
+import com.enit.randomRec.entity.Status;
 
-public class Ad implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class UpdateAdEvent extends Event {
+
 	private String id;
 	private String advertiserEmail;
 	private List<String> category;
@@ -28,7 +23,7 @@ public class Ad implements Serializable {
 	private String country;
 	private String state;
 	private String city;
-	private String status;
+	private Status status;
 	private Date postedOn;
 	private String adImagesDirectory;
 	private String condition;
@@ -37,17 +32,38 @@ public class Ad implements Serializable {
 	private int views;
 	private List<Float> rates = new ArrayList<Float>();
 	private float rate;
+	private Map<String,Double> location;
 
-	public void setRate(float rate) {
-		this.rate = rate;
+
+	public UpdateAdEvent(Ad ad) {
+        super(EventName.UPDATE_AD);
+        this.id = ad.getId();
+
+        this.advertiserEmail = ad.getAdvertiserEmail();
+        this.category = ad.getCategory();
+        this.title = ad.getTitle();
+        this.description = ad.getDescription();
+        this.photosUrls = ad.getPhotosUrls();
+        this.price = ad.getPrice();
+        this.advertiserPhoneNumber = ad.getAdvertiserPhoneNumber();
+        this.country = ad.getCountry();
+        this.state = ad.getState();
+        this.city = ad.getCity();
+        this.status = ad.getStatus();
+        this.postedOn = ad.getPostedOn();
+        this.adImagesDirectory = ad.getAdImagesDirectory();
+        this.condition = ad.getCondition();
+        this.model = ad.getModel();
+        this.brand = ad.getBrand();
+        this.views = ad.getViews();
+        this.rates = ad.getRates();
+        this.rate = ad.getRate();
+        //this.location = ad.getLocation();
+    }
+
+	public UpdateAdEvent() {
+
 	}
-
-	public float getRate() {
-		return rate;
-	}
-
-	private Double[] location;
-
 
 	public String getId() {
 		return id;
@@ -57,8 +73,14 @@ public class Ad implements Serializable {
 		this.id = id;
 	}
 
-
-
+//	public String getRequestId() {
+//		return requestId;
+//	}
+//
+//	public void setRequestId(String requestId) {
+//		this.requestId = requestId;
+//	}
+//
 //	public String getRecommandationId() {
 //		return recommandationId;
 //	}
@@ -147,11 +169,11 @@ public class Ad implements Serializable {
 		this.city = city;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
@@ -211,88 +233,21 @@ public class Ad implements Serializable {
 		this.rates = rates;
 	}
 
+	public float getRate() {
+		return rate;
+	}
 
-	public Double[] getLocation() {
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
+
+	public Map<String,Double> getLocation() {
 		return location;
 	}
 
-	public void setLocation(Double[] location) {
+	public void setLocation(Map<String,Double> location) {
 		this.location = location;
 	}
 
-
-
-	public Ad() {
-		super();
-	}
-
-	public Ad(String id,  String advertiserEmail, List<String> category,
-			  String title, String description, List<String> photosUrls, int price, int advertiserPhoneNumber,
-			  String country, String state, String city, String status, Date postedOn, String adImagesDirectory,
-			  String condition, String model, String brand, int views, List<Float> rates, Double[] location) {
-		super();
-		this.id = id;
-
-//		this.recommandationId = recommandationId;
-		this.advertiserEmail = advertiserEmail;
-		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.photosUrls = photosUrls;
-		this.price = price;
-		this.advertiserPhoneNumber = advertiserPhoneNumber;
-		this.country = country;
-		this.state = state;
-		this.city = city;
-		this.status = status;
-		this.postedOn = postedOn;
-		this.adImagesDirectory = adImagesDirectory;
-		this.condition = condition;
-		this.model = model;
-		this.brand = brand;
-		this.views = views;
-		this.rates = rates;
-
-		this.location = location;
-
-	}
-
-	@Override
-	public String toString() {
-		return "{\"id\": \"" + id + "\", \"advertiserEmail\":\"" + advertiserEmail + "\", \"category\":\"" + category
-				+ "\", \"title\":\"" + title + "\", \"description\":\"" + description + "\", \"photosUrls\":\""
-				+ photosUrls + "\", \"price\":\"" + price + "\", \"advertiserPhoneNumber\":\"" + advertiserPhoneNumber
-				+ "\", \"country\":\"" + country + "\", \"state\":\"" + state + "\", \"city\":\"" + city
-				+ "\", \"status\":\"" + status + "\", \"postedOn\":\"" + postedOn + "\", \"adImagesDirectory\":\""
-				+ adImagesDirectory + "\", \"condition\":\"" + condition + "\", \"model\":\"" + model
-				+ "\", \"brand\":\"" + brand + "\", \"views\":\"" + views + "\", \"rates\":\"" + rates
-				+  "\", \"location\":\"" + location
-				+  "}";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Ad other = (Ad) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
 
 }

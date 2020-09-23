@@ -57,7 +57,7 @@ public class GreetingsListener {
           });
 
 
-        System.out.println("\n ***** Recommandations saved in memory");
+        System.out.println("\n ***** Recommandations from "+list.getAlgoId()+" saved in memory");
 
     }
 }

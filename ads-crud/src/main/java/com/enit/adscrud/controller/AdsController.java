@@ -202,6 +202,7 @@ public class AdsController {
 			jwt=jwt.substring(7);//to eliminate "Bearer " from token string
 			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
 			String username=jwtProvider.getUserNameFromJwtToken(jwt);
+			System.out.println("\n --------- username from jwt is: "+username);
 		Optional<Ad> ad = eserv.findById(id);
 		kafkaTemplate.sendViewEvent(new AdViewedEvent(username,id));
 		return ad;

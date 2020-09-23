@@ -1,12 +1,7 @@
 package com.enit.monitoringRec.events;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
-import java.util.Set;
-
-import com.enit.monitoringRec.events.EventName;
 
 public class AdViewedEvent extends Event {
 
@@ -18,6 +13,11 @@ public class AdViewedEvent extends Event {
 
 
 
+
+	@Override
+	public String toString() {
+		return "AdViewedEvent [username=" + username + ", adId=" + adId + ", timeOfView=" + timeOfView + "]";
+	}
 
 	public String getUsername() {
 		return username;
