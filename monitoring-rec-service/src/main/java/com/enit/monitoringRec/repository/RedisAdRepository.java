@@ -24,20 +24,20 @@ public class RedisAdRepository {
 //        hashOperations.put( username,id, ad);
 //    }
 
-	public void save(String adId, ShortAdInfo shortAdInfo) {
-		hashOperations.put("AD_INFO", adId, shortAdInfo);
+	public void save(String algoId,String adId, ShortAdInfo shortAdInfo) {
+		hashOperations.put(algoId, adId, shortAdInfo);
 	}
 
 //    public Ad findById(String id,String username){
 //        return (Ad) hashOperations.get(username, id);
 //    }
 
-	public ShortAdInfo findById(String adId) {
-		return (ShortAdInfo) hashOperations.get("AD_INFO", adId);
+	public ShortAdInfo findById(String algoId,String adId) {
+		return (ShortAdInfo) hashOperations.get(algoId, adId);
 	}
 
-	public List findAll() {
-		return hashOperations.values("AD_INFO");
+	public List findAll(String algoId) {
+		return hashOperations.values(algoId);
 	}
 
 	public void delete(String adId) {

@@ -38,10 +38,9 @@ public class AdController {
 //        return rec.getAd();
 //    }
 
-	@GetMapping("/adsInfo/all")
-	public List listAdsInfos() {
-
-		return adsService.findAll();
+	@GetMapping("/adsInfo/{algoId}/all")
+	public List listAdsInfosByAlgoId(@PathVariable String algoId) {
+		return adsService.findAll(algoId);
 
 	}
 

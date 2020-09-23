@@ -36,28 +36,45 @@ public class KafkaListener {
 	@StreamListener(MyStream.INPUT_VIEWED_ADS)
 	public void handleViewedAds(@Payload String message) throws JsonProcessingException {
 
-		System.out.println("\n************** viewed ad string is: " + message + "  ************************\n");
+//		System.out.println("\n************** viewed ad string is: " + message + "  ************************\n");
 		AdViewedEvent adViewedEvent = mapper.readValue(message, AdViewedEvent.class);
-		System.out.println("\n ----------------  adViewedEvent after deserialization is: " + "\n\n   " + adViewedEvent);
-		ShortAdInfo savedAdInfo = adsService.findById(adViewedEvent.getAdId());
-		if (savedAdInfo != null) {
-			String algoId = savedAdInfo.getAlgoId();
-			if (adViewedEvent.getTimeOfView().getTime() - savedAdInfo.getTimeOfRecommandation().getTime() <= 600000) {
-				System.out.println("\n  ~~~~~~~~~~~ Ad with id: " + savedAdInfo.getAdId()
-						+ " is viewed within 10 minutes by user: " + adViewedEvent.getUsername()
-						+ " after been recommanded by: " + savedAdInfo.getAlgoId() + " algorithm.");
-				// add +1 to the score of the algo
-				Algorithm algo = algoRepo.findById(algoId).get();
-				if (algo != null) {
-					System.out.println(
-							"\n ------ Algorithm " + algoId + " found in db and has score: " + algo.getScore());
-					algo.incrementScore();
-					algoRepo.save(algo);
-					System.out.println("\n ------------ Score of Algorithm " + algoId + " incremented");
+//		System.out.println("\n ----------------  adViewedEvent after deserialization is: " + "\n\n   " + adViewedEvent);
+		for (Algorithm algo : algoRepo.findAll()) {
+			String algoId = algo.getAlgoId();
+			ShortAdInfo savedAdInfo = adsService.findById(algoId, adViewedEvent.getAdId());
+			if (savedAdInfo != null) {
+				if (savedAdInfo.getUsername().equals(adViewedEvent.getUsername())) {
+					if (!savedAdInfo.isViewedByUser()) {
+//						String algoId = savedAdInfo.getAlgoId();
+						if (adViewedEvent.getTimeOfView().getTime()
+								- savedAdInfo.getTimeOfRecommandation().getTime() <= 600000) {
+							System.out.println("\n  ~~~~~~~~~~~ Ad with id: " + savedAdInfo.getAdId()
+									+ " is viewed within 10 minutes by user: " + adViewedEvent.getUsername()
+									+ " after been recommanded by: " + savedAdInfo.getAlgoId() + " algorithm.");
+							// add +1 to the score of the algo
+//							Algorithm algo = algoRepo.findById(algoId).get();
+//							if (algo != null) {
+//							System.out.println("\n ------ old score of Algorithm " + algoId + " : " + algo.getScore());
+							algo.incrementScore();
+							algoRepo.save(algo);
+							System.out.println("\n ------------ Score of Algorithm " + algoId
+									+ " has incremented and became: " + algo.getScore());
+							savedAdInfo.setIsViewedByUser(true);
+							adsService.save(algoId, savedAdInfo.getAdId(), savedAdInfo);
+							System.out.println("\n ******* isViewedByUser is true");
+//							}
+						}
+					} else {
+						System.out.println("\n !!!!!!!! user has already seen this ad");
+					}
+
+				} else {
+					System.out.println("\n  !!!!!! recommendation was not meant for this user!!");
 				}
+
+			} else {
+				System.out.println("\n !!!!!!!!   Ad is not saved in monitoring db with key: " + algoId);
 			}
-		} else {
-			System.out.println("\n !!!!!!!!   Ad is not saved in monitoring db");
 		}
 //		ConsumerRequest consumerRequest = new ConsumerRequest(loginEvent.getUsername(), loginEvent.getLatitude(),
 //				loginEvent.getLongitude());
@@ -77,12 +94,12 @@ public class KafkaListener {
 		System.out.println("\n ******* Algorithm " + list.getAlgoId() + " saved successfully");
 		list.getListRecommandation().forEach(rec -> {
 			System.out.println("\n ***** before save AD Infos ******");
-			adsService.save(rec.getAd().getId(),
+			adsService.save(list.getAlgoId(), rec.getAd().getId(),
 					new ShortAdInfo(rec.getAd().getId(), list.getAlgoId(), list.getUsername()));
 			System.out.println("\n ***** after save Ad Infos  ******");
 		});
 
-		System.out.println("\n ***** Short Ads' Infos saved in memory");
+		System.out.println("\n ***** Short Ads' Infos from "+list.getAlgoId()+" saved in memory");
 
 	}
 }
