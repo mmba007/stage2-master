@@ -264,18 +264,19 @@ public class TestRestAPIs {
 	@Transactional
 //	@PreAuthorize("hasRole('USER')")
 	public String updateUserPreferences(@RequestBody ListPreferences newPreferences, @RequestHeader("Authorization") String jwt) {
-		System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+		
 		jwt=jwt.substring(7);//to eliminate "Bearer " from token string
-		System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+//		System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
 		String username=jwtProvider.getUserNameFromJwtToken(jwt);
+		System.out.println("\n ~~~~~~~~~~~~~ Jwt Token is:  "+jwt+"    and username is: "+username);
 		Optional<User> opt=userRepository.findByUsername(username);
-		System.out.println(opt.get().getUsername());
+//		System.out.println(opt.get().getUsername());
          if (opt.isPresent()) {
 			User user = opt.get();
 			System.out.println(
 					" /*************************************************/ Your user preferences before updating are : ");
 			for (String preference : user.getPreferences()) {
-				System.out.println("-----------current preference : " + preference);
+				System.out.println(" -----------current preference : " + preference);
 			}
 
 			// user.setPreferences(newPreferences);
@@ -297,10 +298,11 @@ public class TestRestAPIs {
 	@PutMapping("/api/user/update/impPreferences")
 //	@PreAuthorize("hasRole('USER')")
 	public String updateUserImpPreferences(@RequestBody List<String> newPreferences, @RequestHeader("Authorization") String jwt) {
-System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+//System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
 		jwt=jwt.substring(7);//to eliminate "Bearer " from token string
-			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+//			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
 		String username=jwtProvider.getUserNameFromJwtToken(jwt);
+		System.out.println("\n ~~~~~~~~~~~~~ Jwt Token is:  "+jwt+"    and username is: "+username);
 		Optional<User> opt=userRepository.findByUsername(username);
 		if (opt.isPresent()) {
 			User user = opt.get();

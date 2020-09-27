@@ -57,7 +57,7 @@ public class KafkaListener {
             case UPDATE_AD:
                 UpdateAdEvent adEvent= objectMapper.readValue(message,UpdateAdEvent.class);
                 adsService.saveAd(new Ad(adEvent.getId(),adEvent.getCategory(), adEvent.getTitle(),adEvent.getDescription(),adEvent.getPrice(), adEvent.getAdvertiserPhoneNumber(),adEvent.getCountry(),adEvent.getState(),adEvent.getCity(),adEvent.getStatus(),adEvent.getAdImagesDirectory(),adEvent.getCondition(),adEvent.getModel(),adEvent.getBrand(),adEvent.getViews(),adEvent.getRate(),adEvent.getLocation().values().toArray(new Double[0])));
-                System.out.println(adEvent.getType()+"hello");
+                System.out.println(adEvent.getType());
                 break;
     }}
 
@@ -66,10 +66,10 @@ public class KafkaListener {
 
         ObjectMapper mapper = new ObjectMapper();
         Request request = mapper.readValue(requestString, Request.class);
-        System.out.println("\n$$$$$$$$$$$$$$$$$$  REQUEST STRING IS: \n"+request+" \n $$$$$$$$$$$$$$$$$$$$$$$$$\n");
+        System.out.println("\n$$$$$$$$$$$$$$$$$$  REQUEST STRING IS:   "+request+"    $$$$$$$$$$$$$$$$$$$$$$$$$\n");
         String user_id = request.getUsername();
         List<Ad> listAds1 = adsService.findByLocationNear(new Point(request.getLar(),request.getLon()),new Distance(100	, Metrics.MILES));
-        System.out.println("\nThere is " + listAds1.size() + "  recommandations for "+user_id+"\n");
+        System.out.println("\n **** There is " + listAds1.size() + "  recommandations for "+user_id+"\n");
         // System.out.println(request);
 
         if(listAds1.size()>0) {// This is why we called this microservice:RandomRecommandation

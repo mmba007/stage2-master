@@ -1,16 +1,11 @@
 package com.enit.monitoringRec.entity;
 
-import java.io.Serializable;
-
 import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@RedisHash("Algorithm")
-public class Algorithm implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@Document(collection = "algorithm")
+public class Algorithm {
+	
 	@Id
 	private String algoId;
 	private int score = 0;

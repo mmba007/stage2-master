@@ -1,8 +1,12 @@
 package com.enit.monitoringRec.kafkaConsumer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.enit.monitoringRec.configuration.EventService;
@@ -11,7 +15,7 @@ import com.enit.monitoringRec.entity.Algorithm;
 import com.enit.monitoringRec.entity.ListRecommandation;
 import com.enit.monitoringRec.entity.ShortAdInfo;
 import com.enit.monitoringRec.events.AdViewedEvent;
-import com.enit.monitoringRec.repository.AlgoRepo;
+import com.enit.monitoringRec.repository.AlgorithmRepository;
 import com.enit.monitoringRec.repository.RedisAdRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +27,7 @@ public class KafkaListener {
 	RedisAdRepository adsService;
 
 	@Autowired
-	AlgoRepo algoRepo;
+	AlgorithmRepository algoRepo;
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -31,6 +35,39 @@ public class KafkaListener {
 
 	public KafkaListener(EventService eventService) {
 		this.kafkaTemplate = eventService;
+	}
+
+//	@Scheduled(cron = "0 15 10 15 * ?")
+//	//@Scheduled(cron = "0 15 10 15 * ?", zone = "Europe/Paris")
+//	public void scheduleTaskUsingCronExpression() {
+//	 
+//	    long now = System.currentTimeMillis() / 1000;
+//	    System.out.println(
+//	      "schedule tasks using cron jobs - " + now);
+//	}
+//	
+//	// A fixedDelay task:
+//
+//		@Scheduled(fixedDelayString = "${fixedDelay.in.milliseconds}")
+//
+//	// A fixedRate task:
+//
+//		@Scheduled(fixedRateString = "${fixedRate.in.milliseconds}")
+//
+//	// A cron expression based task:
+//
+//		@Scheduled(cron = "${cron.expression}")
+
+//	@Scheduled(fixedDelay = 10000,initialDelay = 5000)
+	@Scheduled(fixedRate = 1200000) // each 20 minutes
+	public void removeOldAdsAfterFixedRate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+		Date now = new Date();
+		String strDate = sdf.format(now);
+		if (adsService.deleteOldAds(1200000)) {
+			System.out.println("\n####### old ads removed from cache at     " + strDate);
+		}
 	}
 
 	@StreamListener(MyStream.INPUT_VIEWED_ADS)
@@ -61,7 +98,7 @@ public class KafkaListener {
 									+ " has incremented and became: " + algo.getScore());
 							savedAdInfo.setIsViewedByUser(true);
 							adsService.save(algoId, savedAdInfo.getAdId(), savedAdInfo);
-							System.out.println("\n ******* isViewedByUser is true");
+//							System.out.println("\n ******* isViewedByUser is true");
 //							}
 						}
 					} else {
@@ -73,7 +110,7 @@ public class KafkaListener {
 				}
 
 			} else {
-				System.out.println("\n !!!!!!!!   Ad is not saved in monitoring db with key: " + algoId);
+				System.out.println("\n !!!!!!!!   Ad is not saved in monitoring db with algo-id: " + algoId);
 			}
 		}
 //		ConsumerRequest consumerRequest = new ConsumerRequest(loginEvent.getUsername(), loginEvent.getLatitude(),
@@ -87,19 +124,19 @@ public class KafkaListener {
 	@StreamListener(MyStream.INPUT_RECOMMANDATION)
 	public void handleUserRecommandation(@Payload String recommandations) throws JsonProcessingException {
 
-		System.out.println("\n ***** Input List of recommandations: " + recommandations);
+//		System.out.println("\n ***** Input List of recommandations: " + recommandations);
 		ListRecommandation list = mapper.readValue(recommandations, ListRecommandation.class);
-		System.out.println("\n ------------ ListRecommandations after deserialization is: \n\n     " + list);
+//		System.out.println("\n ------------ ListRecommandations after deserialization is: \n\n     " + list);
 		algoRepo.save(new Algorithm(list.getAlgoId()));
-		System.out.println("\n ******* Algorithm " + list.getAlgoId() + " saved successfully");
+//		System.out.println("\n ******* Algorithm " + list.getAlgoId() + " saved successfully");
 		list.getListRecommandation().forEach(rec -> {
-			System.out.println("\n ***** before save AD Infos ******");
+//			System.out.println("\n ***** before save AD Infos ******");
 			adsService.save(list.getAlgoId(), rec.getAd().getId(),
 					new ShortAdInfo(rec.getAd().getId(), list.getAlgoId(), list.getUsername()));
-			System.out.println("\n ***** after save Ad Infos  ******");
+//			System.out.println("\n ***** after save Ad Infos  ******");
 		});
 
-		System.out.println("\n ***** Short Ads' Infos from "+list.getAlgoId()+" saved in memory");
+		System.out.println("\n ***** Ads' Infos from " + list.getAlgoId() + " saved in memory");
 
 	}
 }

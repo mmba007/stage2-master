@@ -198,11 +198,12 @@ public class AdsController {
 
 	@GetMapping(value = "/ad/get/{id}")
 	public Optional<Ad> getAds(@PathVariable String id, @RequestHeader("Authorization") String jwt) {
-		System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
+//		System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
 			jwt=jwt.substring(7);//to eliminate "Bearer " from token string
-			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+			
 			String username=jwtProvider.getUserNameFromJwtToken(jwt);
-			System.out.println("\n --------- username from jwt is: "+username);
+			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"       and username is: "+username);
+//			System.out.println("\n --------- username from jwt is: "+username);
 		Optional<Ad> ad = eserv.findById(id);
 		kafkaTemplate.sendViewEvent(new AdViewedEvent(username,id));
 		return ad;

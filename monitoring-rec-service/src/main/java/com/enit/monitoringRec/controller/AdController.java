@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.enit.monitoringRec.configuration.EventService;
 import com.enit.monitoringRec.entity.Algorithm;
-import com.enit.monitoringRec.repository.AlgoRepo;
+import com.enit.monitoringRec.repository.AlgorithmRepository;
 import com.enit.monitoringRec.repository.RedisAdRepository;
 
 @CrossOrigin(origins = "*")
@@ -26,7 +26,7 @@ public class AdController {
 	RedisAdRepository adsService;
 
 	@Autowired
-	AlgoRepo algoRepo;
+	AlgorithmRepository algoRepo;
 
 	@Autowired
 	private RedisAdRepository adRepository;

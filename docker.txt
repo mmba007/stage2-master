@@ -1,3 +1,12 @@
 docker run --network=backend_default -p 8099:8099 user-crud
 docker volume rm $(docker volume ls -q)
 docker-compose -f docker-compose-fix.yml up
+
+# stop all docker containers
+docker stop $(docker ps -aq)
+
+# remove all docker containers
+docker rm $(docker ps -aq)
+
+# remove all docker images
+docker rmi $(docker images -q)

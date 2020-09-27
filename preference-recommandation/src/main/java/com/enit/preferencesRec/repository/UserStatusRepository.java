@@ -1,4 +1,4 @@
-package com.enit.preferencesRec.repository;
+//package com.enit.preferencesRec.repository;
 //package com.enit.randomrecommandationservice.repository;
 //
 //import com.enit.randomrecommandationservice.entity.LoggedInUsers;
