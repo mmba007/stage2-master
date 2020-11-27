@@ -1,0 +1,61 @@
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: authentication-deployment
+  
+  labels:
+    app: Location-based-advertising    
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+        name: authentication
+        app:  Location-based-advertising 
+  
+  template:
+        metadata:
+           name: authentication
+           labels:
+             name: authentication
+             app:  Location-based-advertising 
+
+        
+        spec:
+          containers:
+              - name:  authentication
+                image: ghostih97/authentication
+                imagePullPolicy: IfNotPresent
+                env:
+                    - name:  MYSQL_DB_HOST
+                      value: mysql
+                    - name:  MYSQL_DATABASE
+                      value: "stage2"
+                    - name:  MYSQL_ROOT_PASSWORD
+                      value: "root"
+                    - name:  MYSQL_DATABASE
+                      value: "stage2"
+                    - name:  MYSQL_DB_PORT
+                      value: "3306"
+                    - name:  MYSQL_DB_USER
+                      value: "root"
+        
+        
+                    - name: CONFIG_HOST
+                      value: config-service
+                    - name: CONFIG_PORT
+                      value: "8888"
+                    - name: KAFKA_HOST
+                      value: "172.17.0.13"
+                    - name: KAFKA_PORT
+                      value: "9092"
+                     #- name: ZIPKIN_HOST
+                     #   value: zipkin-service
+                     #- name: ZIPKIN_PORT
+                     # value: 9411
+                    
+                ports:
+                  - containerPort: 8098

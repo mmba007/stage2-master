@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.enit.servingservice.entity.ListRecommandation;
 import com.enit.servingservice.entity.Ad;
+import com.enit.servingservice.entity.ListRecommandation;
 import com.enit.servingservice.entity.Recommandation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

@@ -14,6 +14,12 @@ public class Category {
     @Id
     private String categoryID;
 
+    public Category(String categoryID, String catergoryName, List<String> subCategory) {
+        this.categoryID = categoryID;
+        this.catergoryName = catergoryName;
+        this.subCategory = subCategory;
+    }
+
     public Category(String catergoryName, List<String> subCategory) {
         this.catergoryName = catergoryName;
         this.subCategory = subCategory;

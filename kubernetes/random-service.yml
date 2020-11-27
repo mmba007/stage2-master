@@ -1,0 +1,53 @@
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: random-deployment
+  
+  labels:
+    app: Location-based-advertising    
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+        name: random-service
+        app:  Location-based-advertising 
+  
+  template:
+        metadata:
+           name: random-service
+           labels:
+             name: random-service
+             app:  Location-based-advertising 
+
+        
+        spec:
+          containers:
+              - name:  random-service
+                image: random-service
+                imagePullPolicy: IfNotPresent
+                env:
+                    - name:  MONGO_HOST
+                      value: mongo-service
+                    - name:  MONGO_PORT
+                      value: "27017"
+                    
+                    - name:  MONGO_COLLECTION
+                      value: "stage2"
+                  
+                    - name: KAFKA_HOST
+                      value: my-release1-kafka-headless
+
+                    - name: KAFKA_PORT
+                      value: "9092"
+                     #- name: ZIPKIN_HOST
+                     #   value: zipkin-service
+                     #- name: ZIPKIN_PORT
+                     # value: 9411
+                    
+                ports:
+                  - containerPort: 8049

@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-EXPOSE 8098
+EXPOSE 8761
 ADD target/*.jar app.jar
 ENV JAVA_OPTS=""
 ENV WAIT_VERSION 2.7.2

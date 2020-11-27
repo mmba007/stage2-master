@@ -2,9 +2,18 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/authentication/authentication.iml" filepath="$PROJECT_DIR$/authentication/authentication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/consumer/consumer/consumer.iml" filepath="$PROJECT_DIR$/consumer/consumer/consumer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zuul-gateway/zuul-gateway.iml" filepath="$PROJECT_DIR$/zuul-gateway/zuul-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend.iml" filepath="$PROJECT_DIR$/Backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JWTauthentication/JWTauthentication.iml" filepath="$PROJECT_DIR$/JWTauthentication/JWTauthentication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ads-crud/ads-crud.iml" filepath="$PROJECT_DIR$/ads-crud/ads-crud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/category/category.iml" filepath="$PROJECT_DIR$/category/category.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/discovery-server/discovery-server.iml" filepath="$PROJECT_DIR$/discovery-server/discovery-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/random-recommandation-service/random-recommandation-service.iml" filepath="$PROJECT_DIR$/random-recommandation-service/random-recommandation-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/preference-recommandation/random-recommandation-service (1).iml" filepath="$PROJECT_DIR$/preference-recommandation/random-recommandation-service (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/serving-service/serving-service.iml" filepath="$PROJECT_DIR$/serving-service/serving-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/serving2/serving2/serving2.iml" filepath="$PROJECT_DIR$/serving2/serving2/serving2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-crud/user-crud.iml" filepath="$PROJECT_DIR$/user-crud/user-crud.iml" />
     </modules>
   </component>
 </project>

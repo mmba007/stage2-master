@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers:  http://${KAFKA_HOST}:${KAFKA_PORT}
+      bindings:
+        login-in:
+          destination: login-logout
+          contentType: text/plain
+        request-out:
+          destination: requestRecommandation
+          contentType: application/json
+        recommandation-in:
+          destination: recommandation
+          contentType: text/plain
+
+#  zipkin:
+#    base-url: http://192.168.99.100:9411/
+  application:
+    name: serving-service
+server:
+  port: 8051
+
+REDIS_HOST: ${REDIS_HOST}
+REDIS_PORT: ${REDIS_PORT}

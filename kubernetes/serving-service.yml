@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: serving-service
+  labels:
+    app: Location-based-advertising  
+spec:
+  type: NodePort
+  ports:
+    - port: 8051
+      protocol: TCP
+      targetPort: 8051
+  selector:
+    name: serving-service
+    app:  Location-based-advertising 
+
+---
+
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: serving-deployment
+  
+  labels:
+    app: Location-based-advertising    
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+        name: serving-service
+        app:  Location-based-advertising 
+  
+  template:
+        metadata:
+           name: serving-service
+           labels:
+             name: serving-service
+             app:  Location-based-advertising 
+
+        
+        spec:
+          containers:
+              - name:  serving-service
+                image: serving-service
+                imagePullPolicy: IfNotPresent
+                env:
+                    - name:  REDIS_HOST
+                      value: redis-master
+                    - name:  REDIS_PORT
+                      value: "6379"
+                  
+                    - name: KAFKA_HOST
+                      value: "172.17.0.16"
+
+                    - name: KAFKA_PORT
+                      value: "9092"
+                     #- name: ZIPKIN_HOST
+                     #   value: zipkin-service
+                     #- name: ZIPKIN_PORT
+                     # value: 9411
+                    
+                ports:
+                  - containerPort: 8051

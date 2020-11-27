@@ -57,7 +57,7 @@ public class KafkaListener {
                 //adsService.saveAd(new Ad(event.getCategory(), event.getTitle(),event.getDescription(),event.getPrice(), event.getAdvertiserPhoneNumber(),event.getCountry(),event.getState(),event.getCity(),event.getStatus(),event.getAdImagesDirectory(),event.getCondition(),event.getModel(),event.getBrand(),event.getViews(),event.getRate(),event.getLocation().values().toArray(new Double[0])));
                 userService.deleteByUsername(event.getUsername());
                 kafkaTemplate.sendUserPreferences(new DeleteUserEvent(event.getUsername()));
-                // System.out.println(event.getType());
+                System.out.println(event.getType());
                 break;
 
     }
@@ -65,3 +65,5 @@ public class KafkaListener {
 
 
     }
+
+

@@ -25,7 +25,7 @@ public class KafkaConfiguration {
 	@Bean
 	public Map<String, Object> consumerConfig() {
 		Map<String, Object> props = new HashMap<>();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.99.100:19092");
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
 
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -49,7 +49,7 @@ public class KafkaConfiguration {
 	@Bean
 	public ProducerFactory producerFactory() {
 		Map<String, Object> config = new HashMap<>();
-		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092");
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.99.100:19092");
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 

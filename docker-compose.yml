@@ -1,65 +1,36 @@
 version: '3'
 services:
 
-   authentication:
-      build:
-         context: JWTauthentication
-         dockerfile: Dockerfile
-      restart: always
-      ports:
-      - 8098:8098
-      network_mode: host
-##############################################################
-   serving:
-      build:
-         context: serving2
-         dockerfile: Dockerfile
-      network_mode: host
-      restart: always
-      ports:
-      - 8051:8051
-##############################################################
-   random-recommandation:
-      build:
-         context: random-recommandation-service
-         dockerfile: Dockerfile
-      network_mode: host
-      restart: always
-      ports:
-      - 8049:8049
-##############################################################
-   preferences-recommandation:
-      build:
-         context: preference-recommandation
-         dockerfile: Dockerfile
-      network_mode: host
-      restart: always
-      ports:
-      - 8048:8048
-##############################################################
-   monitoring-recommandations:
-      build:
-         context: monitoring-rec-service
-         dockerfile: Dockerfile
-      network_mode: host
-      restart: always
-      ports:
-      - 8095:8095
-##############################################################
-   user-crud:
-      build:
-         context: user-crud
-         dockerfile: Dockerfile
-      network_mode: host
-      restart: always
-      ports:
-      - 8099:8099
-##############################################################
-   ads-crud:
-      build:
-         context: ads-crud
-         dockerfile: Dockerfile
-      network_mode: host
-      restart: always
-      ports:
-      - 8050:8050
+  authentication:
+    build:
+      context: JWTauthentication
+      dockerfile: Dockerfile
+   
+    restart: always
+    ports:
+      - "8098:8098"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 3gb
+  
+
+  serving:
+    build:
+      context: serving2/serving2
+      dockerfile: Dockerfile
+   
+    restart: always
+    ports:
+      - "8051:8051"
+  
+
+  random-recommandation:
+    build:
+      context: random-recommandation-service
+      dockerfile: Dockerfile
+   
+    restart: always
+    ports:
+      - "8049:8049"

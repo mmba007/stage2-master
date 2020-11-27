@@ -3,7 +3,7 @@ server:
 spring:
     kafka:
         consumer:
-            bootstrap-servers: {$BOOTSTRAP_SERVER:localhost:19092}
+            bootstrap-servers: {$BOOTSTRAP_SERVER:192.168.99.100:19092}
             group-id: ${GROUP_ID:group_id}
             auto-offset-reset: earliest
 
@@ -11,7 +11,7 @@ spring:
       stream:
         kafka:
           binder:
-            brokers: localhost:19092
+            brokers: 192.168.99.100:19092
         bindings:
 
 
@@ -22,29 +22,18 @@ spring:
             destination: userEvent
             contentType: text/plain
 
-
     data:
        elasticsearch:
            repositories:
                 enabled: true
 
-       cluster-nodes: localhost:9200
+       cluster-nodes: 192.168.99.100:9200
        cluster-name: ${CLUSTER_NAME:docker-cluster}
 
     elasticsearch:
       rest:
-        uris: localhost:9200
+        uris: 192.168.99.100:9200
 lbMarketing:
     app:
         jwtSecret: {$SECRET:jwtlbMarketingSecretKey}
         jwtExpiration: {$EXPIRATION:86400}
-
-
-BOOTSTRAP_SERVER: localhost
-BOOTSTRAP_PORT: 19092
-GROUP_ID: group_id
-ELASTIC_SERVER: localhost
-ELASTIC_PORT: 9200
-CLUSTER_NAME: docker-cluster
-SECRET: jwtlbMarketingSecretKey
-EXPIRATION: 86400

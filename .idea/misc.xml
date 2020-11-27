@@ -3,18 +3,21 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/zuul-gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/UserManagement/pom.xml" />
-        <option value="$PROJECT_DIR$/authentication/pom.xml" />
-        <option value="$PROJECT_DIR$/consumer/consumer/pom.xml" />
-        <option value="$PROJECT_DIR$/user-crud1/user-crud/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/ads-crud/pom.xml" />
+        <option value="$PROJECT_DIR$/config-server/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/JWTauthentication/pom.xml" />
+        <option value="$PROJECT_DIR$/random-recommandation-service/pom.xml" />
+        <option value="$PROJECT_DIR$/serving-service/pom.xml" />
+        <option value="$PROJECT_DIR$/serving2/serving2/pom.xml" />
+        <option value="$PROJECT_DIR$/user-crud/pom.xml" />
+        <option value="$PROJECT_DIR$/category/pom.xml" />
+        <option value="$PROJECT_DIR$/recommandation-preferences/pom.xml" />
+        <option value="$PROJECT_DIR$/preference-recommandation/pom.xml" />
       </list>
     </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/UserManagement/pom.xml" />
-      </set>
-    </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="jdk-13.0.2" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>

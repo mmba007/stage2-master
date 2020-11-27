@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TestRestAPIs {
 
-	private static final String URL_PROFILE_PHOTO_DIRECTORY = "http://localhost:8080/sendProfilePhotoPath";
+	private static final String URL_PROFILE_PHOTO_DIRECTORY = "http://196.168.99.100:8080/sendProfilePhotoPath";
 
 	@Autowired
 	UserRepository userRepository;
@@ -35,40 +35,12 @@ public class TestRestAPIs {
 
 	@Autowired
 	EventService kafkaTemplate;
-	// KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
 	JwtProvider jwtProvider;
 
 
 
-//	@GetMapping("/api/users")
-//	public Iterable<User> getAllUsers(){
-//	Iterable<User> users=userServiceImpl.findAllUsers();
-//	for(User usr:users) {
-//		System.out.println(usr);
-//	}return users;
-//	}
-//
-//	@GetMapping("/api/user/{username}")
-//	public Optional<User> getUser(@PathVariable String username){
-//	Optional<User> user=userServiceImpl.findByUserName(username);
-//
-//		System.out.println(user.get());
-//	return user;
-//	}
-
-//	@PostMapping(value = "/user/save")
-//	public String saveUser(@RequestBody User usr) {
-//		userRepository.save(usr);
-//		return "User saved successfully";
-//	}
-//
-//	@PostMapping(value = "/role/save")
-//	public String saveRole(@RequestBody Role role) {
-//		roleRepository.save(role);
-//		return "Role saved successfully";
-//	}
 
 	@PutMapping("/api/user/{username}/update/password")
 	@PreAuthorize("hasRole('USER')")
@@ -87,21 +59,7 @@ public class TestRestAPIs {
 		}
 	}
 
-//	@PutMapping("/api/user/{username}/update/email")
-//	@PreAuthorize("hasRole('USER')")
-//	public String updateUserEmail(@PathVariable String username, @RequestBody String newEmail) {
-//		if (!userRepository.findByUsername(username).isPresent()) {
-//			User user = userRepository.findByUsername(username).get();
-//			System.out.println(user.getEmail());
-//			user.setEmail(newEmail);
-//			userRepository.save(user);
-//
-//			return "Email updated successfully";
-//		} else {
-//			System.out.println("User Not Found");
-//			return "User not found by username: " + username;
-//		}
-//	}
+
 
 	@PutMapping("/api/user/{username}/update/firstName")
 	@PreAuthorize("hasRole('USER')")
@@ -264,26 +222,21 @@ public class TestRestAPIs {
 	@Transactional
 //	@PreAuthorize("hasRole('USER')")
 	public String updateUserPreferences(@RequestBody ListPreferences newPreferences, @RequestHeader("Authorization") String jwt) {
-		
-		jwt=jwt.substring(7);//to eliminate "Bearer " from token string
-//		System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+		jwt=jwt.substring(7);
 		String username=jwtProvider.getUserNameFromJwtToken(jwt);
-		System.out.println("\n ~~~~~~~~~~~~~ Jwt Token is:  "+jwt+"    and username is: "+username);
 		Optional<User> opt=userRepository.findByUsername(username);
-//		System.out.println(opt.get().getUsername());
+        System.out.println(opt.get().getUsername());
          if (opt.isPresent()) {
 			User user = opt.get();
 			System.out.println(
 					" /*************************************************/ Your user preferences before updating are : ");
 			for (String preference : user.getPreferences()) {
-				System.out.println(" -----------current preference : " + preference);
+				System.out.println("-----------current preference : " + preference);
 			}
 
-			// user.setPreferences(newPreferences);
 			user.setPreferences(newPreferences.getNewPreferences());
 			userRepository.save(user);
 
-			//kafkaTemplate.send("userEvent", new UpdateUserPreferences(username, newPreferences));
 			kafkaTemplate.sendUserPreferences( new UpdateUserEvent(username, newPreferences.getNewPreferences(),user.getImpPreferences()));
 
 			System.out.println("##################### User's preferences updated successfully");
@@ -294,15 +247,11 @@ public class TestRestAPIs {
 		}
 	}
 
-	// @PutMapping("/api/user/update/preferences")
 	@PutMapping("/api/user/update/impPreferences")
 //	@PreAuthorize("hasRole('USER')")
 	public String updateUserImpPreferences(@RequestBody List<String> newPreferences, @RequestHeader("Authorization") String jwt) {
-//System.out.println("\n ~~~~~~~~~~~~~ Token string is:  "+jwt+"\n");
-		jwt=jwt.substring(7);//to eliminate "Bearer " from token string
-//			System.out.println("\n ~~~~~~~~~~~~~ JWT Token is:  "+jwt+"\n");
+		jwt=jwt.substring(7);
 		String username=jwtProvider.getUserNameFromJwtToken(jwt);
-		System.out.println("\n ~~~~~~~~~~~~~ Jwt Token is:  "+jwt+"    and username is: "+username);
 		Optional<User> opt=userRepository.findByUsername(username);
 		if (opt.isPresent()) {
 			User user = opt.get();
@@ -315,7 +264,6 @@ public class TestRestAPIs {
 			user.setImpPreferences(newPreferences);
 			userRepository.save(user);
 
-			//kafkaTemplate.send("userEvent", new UpdateUserPreferences(username, newPreferences));
 			kafkaTemplate.sendUserPreferences( new UpdateUserEvent(username,user.getPreferences(),newPreferences));
 
 			System.out.println("##################### User's preferences updated successfully");
@@ -446,7 +394,7 @@ public class TestRestAPIs {
 				} else {
 					return "dont match";
 				}
-
+	
 			} else {
 				System.out.println("User Not Found");
 				return "User not found";
@@ -643,7 +591,7 @@ public class TestRestAPIs {
 		return null;
 
 	}
-
+	
 	@GetMapping("/api/user/allDetailsByEmail/{email}")
 	@PreAuthorize("hasRole('USER')")
 	public User getUserDetailsByEmail(@PathVariable String email) {
@@ -656,7 +604,7 @@ public class TestRestAPIs {
 			return null;
 		}
 	}
-
+	
 	@GetMapping("/api/user/allDetailsById/{id}")
 	@PreAuthorize("hasRole('USER')")
 	public User getUserDetailsById(@PathVariable String id) {
@@ -669,7 +617,7 @@ public class TestRestAPIs {
 			return null;
 		}
 	}
-
+	
 	@GetMapping("/api/user/consumerPreferencesByUsername")
 //	@PreAuthorize("hasRole('USER')")
 	public List<String> getConsumerPreferencesById(@RequestHeader("Authorization") String jwt) {

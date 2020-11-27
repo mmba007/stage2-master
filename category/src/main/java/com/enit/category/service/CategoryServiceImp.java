@@ -19,7 +19,10 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void createCategory(Category category) throws Exception {
-        repository.save(category);
+        if(category.getCatergoryName().length()>=2)
+                repository.save(category);
+        else
+            throw new Exception("Category name not valid");
     }
 
     @Override
@@ -50,6 +53,11 @@ public class CategoryServiceImp implements CategoryService {
         return repository.findAll();
     }
 
+    @Override
+    public Optional<Category> getCategoryById(String id) throws Exception {
+
+        return repository.findById(id);
+    }
 
 
 }

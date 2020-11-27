@@ -35,7 +35,7 @@ public class JwtProvider {
 		                .signWith(SignatureAlgorithm.HS512, jwtSecret)
 		                .compact();
     }
-
+    
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
@@ -51,17 +51,17 @@ public class JwtProvider {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty -> Message: {}", e);
         }
-
+        
         return false;
     }
-
+    
     public String getUserNameFromJwtToken(String token) {
-//        System.out.println("hello 0");
+        System.out.println("hello 0");
         String jwt=Jwts.parser()
 			                .setSigningKey(jwtSecret)
 			                .parseClaimsJws(token)
 			                .getBody().getSubject();
-//        System.out.println("hello 1");
+        System.out.println("hello 1");
         return jwt;
     }
 }

@@ -12,7 +12,13 @@ import java.util.List;
 
 @RestController
 public class Controller {
-   @Autowired
+
+    @Autowired
+    public Controller(CategoryService categoryService){
+        this.categoryService=categoryService;
+    }
+
+
    private CategoryService categoryService;
 
     @PostMapping("/save/{categoryName}")
@@ -74,7 +80,7 @@ public class Controller {
 
         try {
             List<Category> categories=categoryService.getAllCategory();
-            return new ResponseEntity<>(categories ,HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(categories ,HttpStatus.OK);
 
         } catch (Exception exception) {
             exception.printStackTrace();

@@ -3,7 +3,7 @@ server:
 spring:
   data:
      mongodb:
-        host: localhost
+        host: 192.168.99.100
         port: 27017
         database: stage2
         authentication-database: admin
@@ -11,7 +11,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:19092
+          brokers: 192.168.99.100:19092
       bindings:
         request-in:
           destination: requestRecommandation
@@ -24,9 +24,9 @@ spring:
           contentType: text/plain
         user-event-in:
           destination: userPreferences
-          contentType: text/plain  
+          contentType: text/plain
 #  zipkin:
-#    base-url: http://localhost:9411/
+#    base-url: http://192.168.99.100:9411/
   application:
       name: preference-recommandation-service
 logging:

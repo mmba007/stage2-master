@@ -9,11 +9,6 @@ interface MyStream {
 
     String OUTPUT = "events-out";
 
-    String OUTPUT_VIEW = "viewed-ads-out";
-
     @Output(OUTPUT)
     MessageChannel outboundEvent();
-
-    @Output(OUTPUT_VIEW)
-    MessageChannel outboundViewEvent();
 }

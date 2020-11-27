@@ -5,17 +5,17 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:19092
+
+#          brokers: 192.168.99.100:19092
+           brokers:  http://${KAFKA_HOST}:${KAFKA_PORT}
       bindings:
         events-out:
           destination: adsToBeConsumed
           contentType: application/json
-        viewed-ads-out:
-          destination: viewedAds
-          contentType: application/json
 
-#  zipkin:
-#    base-url: http://localhost:9411/
+  zipkin:
+#    base-url: http://192.168.99.100:9411/
+     base-url: http://${ZIPKIN_HOST}:${ZIPKIN_PORT}
 
 
 
@@ -25,12 +25,15 @@ spring:
       repositories:
         enabled: true
 
-    cluster-nodes: localhost:9200
+#    cluster-nodes: 192.168.99.100:9200
+
+    cluster-nodes: http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}
     cluster-name: ${CLUSTER_NAME:docker-cluster}
 
   elasticsearch:
     rest:
-      uris: localhost:9200
+#      uris: 192.168.99.100:9200
+      uris: ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}
 lbMarketing:
   app:
     jwtSecret: {$SECRET:jwtlbMarketingSecretKey}
@@ -39,12 +42,3 @@ security:
     basic:
        enable: false
     ignored: /**
-
-BOOTSTRAP_SERVER: localhost
-BOOTSTRAP_PORT: 19092
-GROUP_ID: group_id
-ELASTIC_SERVER: localhost
-ELASTIC_PORT: 9200
-CLUSTER_NAME: docker-cluster
-SECRET: jwtlbMarketingSecretKey
-EXPIRATION: 86400

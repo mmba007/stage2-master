@@ -1,10 +1,88 @@
-version: '2'
+version: '3'
 services:
+
+
+  
+ 
+
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      S_JAVA_OPTS: "-Xms512m -Xmx512m"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 3gb
+
+#  kafka:
+#      image: confluentinc/cp-kafka:latest
+#      ports:
+#        - 9094:9094
+#        - 19092:19092
+#      depends_on:
+#        - zookeeper
+#      restart: always
+#      environment:
+#        KAFKA_BROKER_ID: 1
+#        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#        # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
+#        #KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
+#        KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9094,LISTENER_HOST://192.168.99.100:19092
+#        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
+#        KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE
+#        KAFKA_CREATE_TOPICS: "usersProfiles:1:1"
+#        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#        KAFKA_HEAP_OPTS: " -Xmx256m -Xms256m"
+#      deploy:
+#        resources:
+#          limits:
+#            cpus: '0.001'
+#            memory: 3gb
+
+
+
+#  authentication:
+#    build:
+#      context: JWTauthentication
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - config-server
+#      - mysql
+#      - discovery-server
+#      - kafka
+#    restart: always
+#    ports:
+#      - "8098:8098"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.001'
+#          memory: 3gb
+
+  ###########################################
+  config-server:
+    build:
+      context: config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 3gb
+
+  ############################################
   mysql:
       image: mysql:latest
       ports:
         - "3306:3306"
-      restart: always
       environment:
           MYSQL_DATABASE: 'security'
           # So you don't have to use root, but you can if you like
@@ -17,37 +95,58 @@ services:
       expose:
         # Opens port 3306 on the container
         - '3306'
-
-
-  authentication:
-    build:
-      context: JWTauthentication
-      dockerfile: Dockerfile
-   
-    restart: always
+  kafka:
+    image: confluentinc/cp-kafka:latest
     ports:
-      - "8098:8098"
-    network_mode: host
-    depends_on: 
-      - mysql
-    # environment:
-    #   SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/security?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
+      - 9094:9094
+      - 19092:19092
+    depends_on:
+      - zookeeper
 
-  serving:
-    build:
-      context: serving2/serving2
-      dockerfile: Dockerfile
-    network_mode: host
     restart: always
-    ports:
-      - "8051:8051"
-  
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # For more details see See https://rmoff.net/2018/08/02/kafka-listeners-explained/
+      #KAFKA_LISTENERS: LISTENER_INSIDE://kafka:29092,LISTENER_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INSIDE://kafka:9094,LISTENER_HOST://192.168.99.100:19092
+      #        KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INSIDE:PLAINTEXT,LISTENER_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INSIDE
+      KAFKA_CREATE_TOPICS: "requestRecommandation:1:1"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_HEAP_OPTS: " -Xmx256m -Xms256m"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 3gb
 
-  random-recommandation:
+  ###################################################################
+  discovery-server:
     build:
-      context: random-recommandation-service
+      context: discovery-server
       dockerfile: Dockerfile
-    network_mode: host
-    restart: always
     ports:
-      - "8049:8049"
+      - "8761:8761"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 3gb
+
+################################################################
+
+#  user-crud:
+#    build:
+#      context: user-crud
+#      dockerfile: Dockerfile
+#    depends_on:
+##     - discovery-server
+##     - config-server
+#      - kafka
+#      - elasticsearch
+#    restart: always
+#    ports:
+#    - "8099:8099"
+
